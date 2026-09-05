@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI — Advanced Neurological MRI Analysis Platform</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ====================================================
+         APP NAVBAR
+         ==================================================== -->
+    <header class="ns-navbar">
+        <div class="ns-navbar__container">
+            <a href="/" class="ns-brand">
+                <div class="ns-brand__logo-wrap" aria-hidden="true">
+                    <!-- Brain Neural Scan Vector Icon -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
+                        <path d="M9 22h6"/>
+                        <path d="M12 2v6"/>
+                        <path d="M8 8h8"/>
+                    </svg>
+                </div>
+                <div class="ns-brand__text">
+                    <div class="ns-brand__name">
+                        NeuroScan <span>AI</span>
+                        <span class="ns-brand__badge">v2.4</span>
+                    </div>
+                    <span class="ns-brand__tagline">Deep Neural Diagnostics &amp; Lesion Segmentation</span>
+                </div>
+            </a>
+
+            <div class="ns-navbar__meta">
+                <div class="ns-status-pill">
+                    <span class="ns-status-dot" aria-hidden="true"></span>
+                    <span>TensorFlow + YOLOv11 Engine Active</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================
+         MAIN CONTENT AREA
+         ==================================================== -->
+    <main class="ns-main">
+        <div class="ns-container ns-container--narrow">
+
+            <!-- Hero Introduction -->
+            <section class="ns-hero">
+                <div class="ns-badge-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Next-Gen Neurological Diagnostic Assistant
+                </div>
+                <h1 class="ns-hero__title">
+                    Precision Brain MRI Analysis &amp; <span>Tumor Delineation</span>
+                </h1>
+                <p class="ns-hero__subtitle">
+                    Upload cranial MRI scans for instantaneous multi-class pathology classification and real-time YOLOv11 instance segmentation.
+                </p>
+            </section>
+
+            <!-- ================================================
+                 UPLOAD & ANALYSIS FORM
+                 Backend Form Action: POST /predict
+                 Input Name: mri
+                 ================================================ -->
+            <form id="ns-upload-form" action="/predict" method="POST" enctype="multipart/form-data">
+
+                <div class="ns-card ns-card--elevated">
+                    
+                    <div class="ns-card__header">
+                        <div class="ns-card__header-left">
+                            <div class="ns-icon-badge ns-icon-badge--blue" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="ns-card__title">MRI Acquisition &amp; Ingestion</h2>
+                                <p class="ns-card__subtitle">Select or drop a cranial MRI slice for deep inspection</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drag and Drop Dropzone -->
+                    <div id="ns-upload-zone" class="ns-upload-zone" role="button" tabindex="0" aria-label="Upload Brain MRI Scan">
+                        
+                        <div class="ns-upload-zone__reticle" aria-hidden="true">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="16"/>
+                                <line x1="8" y1="12" x2="16" y2="12"/>
+                            </svg>
+                        </div>
+
+                        <h3 class="ns-upload-zone__title">Drag &amp; Drop Brain MRI Scan Here</h3>
+                        <p class="ns-upload-zone__desc">Supports standard axial, sagittal, or coronal MRI sequences</p>
+                        
+                        <span class="ns-upload-zone__btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 17l6-6-6-6M12 19h8"/>
+                            </svg>
+                            Browse Local Storage
+                        </span>
+
+                        <div class="ns-upload-zone__pills">
+                            <span class="ns-pill">JPG / JPEG</span>
+                            <span class="ns-pill">PNG 24-Bit</span>
+                            <span class="ns-pill">Auto 224×224 Normalization</span>
+                        </div>
+
+                        <!-- INTEGRATION: Native File Input (name="mri" is strictly required by Flask) -->
+                        <input
+                            id="mri-file-input"
+                            class="ns-upload-zone__input"
+                            type="file"
+                            name="mri"
+                            accept=".jpg,.jpeg,.png"
+                            required
+                            aria-label="Select MRI Image File"
+                        >
+                    </div>
+
+                    <!-- Live Image Preview Stage -->
+                    <div id="ns-preview-panel" class="ns-preview-panel">
+                        <div class="ns-preview-stage">
+                            <div class="ns-preview-img-box">
+                                <img id="ns-preview-img" class="ns-preview-img" src="" alt="Selected MRI Scan Preview">
+                            </div>
+                            <div class="ns-preview-meta">
+                                <span id="ns-preview-filename" class="ns-preview-filename">mri_scan.jpg</span>
+                                <span id="ns-preview-filesize" class="font-mono text-slate-400">0 KB</span>
+                            </div>
+                        </div>
+
+                        <div class="ns-preview-controls">
+                            <button id="ns-remove-btn" type="button" class="ns-btn ns-btn--ghost ns-btn--sm">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                                Change Image
+                            </button>
+                            <button id="ns-analyze-btn" type="submit" class="ns-btn ns-btn--primary" disabled>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                                Run NeuroScan Analysis
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <!-- ================================================
+                 AI ARCHITECTURE & PIPELINE OVERVIEW
+                 ================================================ -->
+            <div class="ns-features-grid">
+                
+                <div class="ns-feature-card">
+                    <span class="ns-feature-card__tag">Stage 01 • Deep Classifier</span>
+                    <h3 class="ns-feature-card__title">4-Class Pathology Neural Network</h3>
+                    <p class="ns-feature-card__desc">
+                        TensorFlow/Keras model evaluates Softmax probabilities for Glioma, Meningioma, Pituitary, and Normal Brain Tissue with 70% threshold gating.
+                    </p>
+                </div>
+
+                <div class="ns-feature-card">
+                    <span class="ns-feature-card__tag">Stage 02 • Spatial Localization</span>
+                    <h3 class="ns-feature-card__title">YOLOv11n Instance Segmentation</h3>
+                    <p class="ns-feature-card__desc">
+                        High-precision instance polygon mask extraction, tumor pixel density calculation, and cranial surface ratio estimation.
+                    </p>
+                </div>
+
+                <div class="ns-feature-card">
+                    <span class="ns-feature-card__tag">Stage 03 • Telemetry</span>
+                    <h3 class="ns-feature-card__title">Diagnostic Telemetry &amp; Masks</h3>
+                    <p class="ns-feature-card__desc">
+                        Generates visual color overlays and volumetric metrics ready for clinical research review and comparative documentation.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ====================================================
+         DIAGNOSTIC LOADING HUD (Processing Modal)
+         ==================================================== -->
+    <div id="ns-loading-hud" class="ns-loading-hud" role="alert" aria-live="assertive">
+        <div class="ns-radar-spinner" aria-hidden="true"></div>
+        <div style="text-align: center;">
+            <div class="ns-loading-title">NeuroScan Neural Processing</div>
+            <p id="ns-loading-step-text" class="ns-loading-steps">
+                Preprocessing MRI scan &amp; normalizing tensor (224×224 RGB)...
+            </p>
+        </div>
+    </div>
+
+    <!-- ====================================================
+         FOOTER
+         ==================================================== -->
+    <footer class="ns-footer">
+        <div class="ns-container">
+            <strong>NeuroScan AI</strong> &bull; Deep Learning Neurological Diagnostic Platform &bull; Academic &amp; Research Prototype
+        </div>
+    </footer>
+
+    <!-- Client Script -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

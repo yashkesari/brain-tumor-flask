@@ -1,0 +1,7 @@
+Flask
+tensorflow
+ultralytics
+Pillow
+numpy
+matplotlib
+Werkzeug

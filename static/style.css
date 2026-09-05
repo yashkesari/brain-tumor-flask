@@ -1,0 +1,1306 @@
+/* ============================================================
+   NEUROSCAN AI — Advanced Neurological MRI Diagnostic Suite
+   ============================================================
+   Design System: High-End Medical / Clinical AI Research Dashboard
+   Typography: Plus Jakarta Sans, Inter, JetBrains Mono
+   Palette: Deep Medical Navy, Sapphire Blue, Medical Cyan, Crisp Slate
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+/* ---------- Design Tokens ---------- */
+:root {
+  /* Brand Spectrum */
+  --primary: #1e40af;            /* Deep Medical Sapphire */
+  --primary-glow: rgba(37, 99, 235, 0.25);
+  --primary-accent: #2563eb;     /* Electric Cobalt */
+  --primary-subtle: #eff6ff;     /* Lightest blue tint */
+  --primary-border: #bfdbfe;
+
+  --cyan-accent: #0284c7;        /* Medical Cyan */
+  --cyan-subtle: #f0f9ff;
+  --cyan-border: #bae6fd;
+
+  --teal-accent: #0d9488;        /* Diagnostic Teal */
+  --teal-subtle: #f0fdfa;
+  --teal-border: #99f6e4;
+
+  /* Diagnostics Status Colors */
+  --glioma-color: #dc2626;       /* Crimson for aggressive glial lesions */
+  --glioma-subtle: #fef2f2;
+  --glioma-border: #fecaca;
+
+  --meningioma-color: #7c3aed;   /* Royal Violet for dural meningioma */
+  --meningioma-subtle: #f5f3ff;
+  --meningioma-border: #ddd6fe;
+
+  --pituitary-color: #d97706;    /* Amber Gold for sellar adenomas */
+  --pituitary-subtle: #fffbeb;
+  --pituitary-border: #fde68a;
+
+  --healthy-color: #059669;      /* Emerald for clear / no-tumor */
+  --healthy-subtle: #ecfdf5;
+  --healthy-border: #a7f3d0;
+
+  --uncertain-color: #ea580c;    /* Caution Orange */
+  --uncertain-subtle: #fff7ed;
+  --uncertain-border: #fed7aa;
+
+  /* Neutrals & Surfaces */
+  --navy-950: #090e17;
+  --navy-900: #0f172a;
+  --navy-800: #1e293b;
+  --navy-700: #334155;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --surface-white: #ffffff;
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Shadows & Depth */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 6px 16px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0 24px 48px -8px rgba(15, 23, 42, 0.12);
+  --shadow-glow: 0 0 24px var(--primary-glow);
+
+  /* Borders & Radius */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --trans-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --trans-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Global Reset & Setup ---------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--slate-50);
+  background-image: 
+    radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.04) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(13, 148, 136, 0.04) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--navy-800);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mono Elements */
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--navy-900);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Links */
+a {
+  color: var(--primary-accent);
+  text-decoration: none;
+  transition: var(--trans-fast);
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+/* ============================================================
+   APP NAVIGATION BAR
+   ============================================================ */
+.ns-navbar {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--slate-200);
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-xs);
+}
+
+.ns-navbar__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ns-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.ns-brand__logo-wrap {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--primary) 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.ns-brand__logo-wrap::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+  transform: rotate(30deg);
+}
+
+.ns-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ns-brand__name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ns-brand__name span {
+  color: var(--primary-accent);
+}
+
+.ns-brand__badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--primary-subtle);
+  color: var(--primary-accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--primary-border);
+}
+
+.ns-brand__tagline {
+  font-size: 0.75rem;
+  color: var(--slate-500);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.ns-navbar__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ns-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy-800);
+  box-shadow: var(--shadow-xs);
+}
+
+.ns-status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--healthy-color);
+  border-radius: 50%;
+  position: relative;
+}
+
+.ns-status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background-color: var(--healthy-color);
+  opacity: 0.4;
+  animation: pulse-ring 2s infinite ease-out;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ============================================================
+   MAIN WRAPPER & LAYOUT CONTAINERS
+   ============================================================ */
+.ns-main {
+  flex: 1;
+  padding: 36px 20px 64px;
+}
+
+.ns-container {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.ns-container--narrow {
+  max-width: 860px;
+}
+
+/* ============================================================
+   HERO BANNER (Upload View)
+   ============================================================ */
+.ns-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ns-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--primary-subtle), var(--cyan-subtle));
+  border: 1px solid var(--primary-border);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-xs);
+}
+
+.ns-hero__title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--navy-950);
+  margin-bottom: 12px;
+}
+
+.ns-hero__title span {
+  background: linear-gradient(135deg, var(--primary-accent) 0%, var(--teal-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ns-hero__subtitle {
+  font-size: 1.125rem;
+  color: var(--slate-500);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   CARD COMPONENT SYSTEM
+   ============================================================ */
+.ns-card {
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--trans-normal), border-color var(--trans-normal);
+  position: relative;
+}
+
+.ns-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.ns-card--elevated {
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(203, 213, 225, 0.8);
+}
+
+.ns-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.ns-card__header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ns-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ns-icon-badge--blue {
+  background: var(--primary-subtle);
+  color: var(--primary-accent);
+  border: 1px solid var(--primary-border);
+}
+
+.ns-icon-badge--teal {
+  background: var(--teal-subtle);
+  color: var(--teal-accent);
+  border: 1px solid var(--teal-border);
+}
+
+.ns-icon-badge--emerald {
+  background: var(--healthy-subtle);
+  color: var(--healthy-color);
+  border: 1px solid var(--healthy-border);
+}
+
+.ns-icon-badge--amber {
+  background: var(--pituitary-subtle);
+  color: var(--pituitary-color);
+  border: 1px solid var(--pituitary-border);
+}
+
+.ns-card__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.ns-card__subtitle {
+  font-size: 0.8125rem;
+  color: var(--slate-500);
+}
+
+/* ============================================================
+   UPLOAD CONSOLE (INDEX PAGE)
+   ============================================================ */
+.ns-upload-zone {
+  border: 2px dashed var(--slate-300);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--surface-white) 0%, var(--slate-50) 100%);
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--trans-normal);
+  outline: none;
+}
+
+.ns-upload-zone:hover,
+.ns-upload-zone--dragover {
+  border-color: var(--primary-accent);
+  background: var(--primary-subtle);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+}
+
+.ns-upload-zone__reticle {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  background: var(--surface-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-accent);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--primary-border);
+  transition: transform var(--trans-normal);
+}
+
+.ns-upload-zone:hover .ns-upload-zone__reticle {
+  transform: scale(1.08);
+  color: var(--primary);
+}
+
+.ns-upload-zone__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin-bottom: 6px;
+}
+
+.ns-upload-zone__desc {
+  font-size: 0.9375rem;
+  color: var(--slate-500);
+  margin-bottom: 20px;
+}
+
+.ns-upload-zone__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  pointer-events: none;
+  transition: background var(--trans-fast);
+}
+
+.ns-upload-zone:hover .ns-upload-zone__btn {
+  background: var(--primary);
+}
+
+.ns-upload-zone__pills {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.ns-pill {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--slate-100);
+  color: var(--slate-500);
+  border: 1px solid var(--slate-200);
+}
+
+/* Hidden File Input */
+.ns-upload-zone__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ---------- Preview State ---------- */
+.ns-preview-panel {
+  display: none;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.ns-preview-panel--active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ns-preview-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: var(--slate-900);
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--navy-800);
+}
+
+.ns-preview-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 12px);
+  pointer-events: none;
+}
+
+.ns-preview-img-box {
+  position: relative;
+  max-width: 340px;
+  width: 100%;
+  max-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.ns-preview-img {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+}
+
+.ns-preview-meta {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-size: 0.8125rem;
+  z-index: 1;
+}
+
+.ns-preview-filename {
+  font-family: var(--font-mono);
+  background: rgba(255,255,255,0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.15);
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ns-preview-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.ns-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--trans-fast);
+  border: none;
+  text-decoration: none;
+  line-height: 1.3;
+}
+
+.ns-btn:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 3px;
+}
+
+.ns-btn--primary {
+  background: linear-gradient(135deg, var(--primary-accent) 0%, var(--primary) 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.ns-btn--primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.ns-btn--primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ns-btn--secondary {
+  background: var(--surface-white);
+  color: var(--navy-800);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-xs);
+}
+
+.ns-btn--secondary:hover {
+  background: var(--slate-100);
+  border-color: var(--slate-300);
+}
+
+.ns-btn--ghost {
+  background: transparent;
+  color: var(--slate-500);
+}
+
+.ns-btn--ghost:hover {
+  background: var(--glioma-subtle);
+  color: var(--glioma-color);
+}
+
+.ns-btn--sm {
+  padding: 8px 16px;
+  font-size: 0.8125rem;
+}
+
+/* ============================================================
+   PIPELINE ARCHITECTURE INFO CARDS (Index Page)
+   ============================================================ */
+.ns-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.ns-feature-card {
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  transition: transform var(--trans-fast), box-shadow var(--trans-fast);
+}
+
+.ns-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-border);
+}
+
+.ns-feature-card__tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--primary-accent);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.ns-feature-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin-bottom: 6px;
+}
+
+.ns-feature-card__desc {
+  font-size: 0.8125rem;
+  color: var(--slate-500);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   RESULTS DASHBOARD PAGE
+   ============================================================ */
+.ns-report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ns-report-header__title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy-950);
+}
+
+.ns-report-header__subtitle {
+  font-size: 0.875rem;
+  color: var(--slate-500);
+}
+
+.ns-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Meta Data Strip */
+.ns-scan-meta {
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.8125rem;
+}
+
+.ns-scan-meta__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ns-scan-meta__label {
+  color: var(--slate-400);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+}
+
+.ns-scan-meta__val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--navy-800);
+}
+
+/* ---------- Primary Diagnostic Banner Card ---------- */
+.ns-diagnosis-banner {
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 28px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ns-diagnosis-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--primary-accent);
+}
+
+/* Class-specific banner theme lines */
+.ns-diagnosis-banner--glioma::before { background: var(--glioma-color); }
+.ns-diagnosis-banner--meningioma::before { background: var(--meningioma-color); }
+.ns-diagnosis-banner--pituitary::before { background: var(--pituitary-color); }
+.ns-diagnosis-banner--notumor::before { background: var(--healthy-color); }
+.ns-diagnosis-banner--uncertain::before { background: var(--uncertain-color); }
+
+.ns-diagnosis-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ns-diagnosis-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  width: fit-content;
+}
+
+.ns-diagnosis-tag--glioma { background: var(--glioma-subtle); color: var(--glioma-color); border: 1px solid var(--glioma-border); }
+.ns-diagnosis-tag--meningioma { background: var(--meningioma-subtle); color: var(--meningioma-color); border: 1px solid var(--meningioma-border); }
+.ns-diagnosis-tag--pituitary { background: var(--pituitary-subtle); color: var(--pituitary-color); border: 1px solid var(--pituitary-border); }
+.ns-diagnosis-tag--notumor { background: var(--healthy-subtle); color: var(--healthy-color); border: 1px solid var(--healthy-border); }
+.ns-diagnosis-tag--uncertain { background: var(--uncertain-subtle); color: var(--uncertain-color); border: 1px solid var(--uncertain-border); }
+
+.ns-diagnosis-name {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--navy-950);
+  line-height: 1.1;
+}
+
+.ns-diagnosis-desc {
+  font-size: 0.9375rem;
+  color: var(--slate-500);
+  line-height: 1.5;
+}
+
+.ns-diagnosis-gauge {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ns-gauge-score {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.ns-gauge-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--slate-400);
+}
+
+/* ============================================================
+   RESULTS DASHBOARD GRID
+   ============================================================ */
+.ns-results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+/* ---------- Probability Distribution List ---------- */
+.ns-prob-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ns-prob-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--slate-50);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  transition: all var(--trans-fast);
+}
+
+.ns-prob-item--active {
+  background: var(--surface-white);
+  border-color: var(--primary-accent);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.ns-prob-item__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ns-prob-item__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.ns-prob-item__pct {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--navy-800);
+}
+
+.ns-prob-item--active .ns-prob-item__pct {
+  color: var(--primary-accent);
+}
+
+.ns-prob-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--slate-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ns-prob-bar__fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--slate-400);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 2px;
+}
+
+.ns-prob-item--active .ns-prob-bar__fill {
+  background: linear-gradient(90deg, var(--primary-accent), var(--cyan-accent));
+}
+
+/* ---------- Segmentation Telemetry ---------- */
+.ns-seg-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.ns-seg-badge--detected {
+  background: var(--healthy-subtle);
+  color: var(--healthy-color);
+  border: 1px solid var(--healthy-border);
+}
+
+.ns-seg-badge--none {
+  background: var(--slate-100);
+  color: var(--slate-500);
+  border: 1px solid var(--slate-200);
+}
+
+.ns-telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ns-telemetry-box {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.ns-telemetry-box__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate-400);
+  margin-bottom: 6px;
+}
+
+.ns-telemetry-box__val {
+  font-family: var(--font-mono);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.ns-telemetry-box__sub {
+  font-size: 0.6875rem;
+  color: var(--slate-400);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   VISUALIZATION CANVAS (Full Width)
+   ============================================================ */
+.ns-vis-card {
+  grid-column: 1 / -1;
+}
+
+.ns-vis-stage {
+  background: #060a12;
+  border-radius: var(--radius-lg);
+  border: 1px solid #1a2333;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+}
+
+.ns-vis-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.ns-vis-img {
+  max-width: 100%;
+  max-height: 520px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+  position: relative;
+  z-index: 1;
+}
+
+.ns-vis-legend {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1;
+  flex-wrap: wrap;
+}
+
+.ns-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.ns-legend-chip {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.ns-legend-chip--red {
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.ns-legend-chip--base {
+  background: #475569;
+}
+
+/* ============================================================
+   CLINICAL SYNOPSIS & PATHOLOGY REFERENCE
+   ============================================================ */
+.ns-synopsis-box {
+  background: linear-gradient(180deg, var(--surface-white) 0%, var(--slate-50) 100%);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.ns-synopsis-box__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin-bottom: 10px;
+}
+
+.ns-synopsis-box__text {
+  font-size: 0.875rem;
+  color: var(--slate-500);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   MEDICAL DISCLAIMER BOX
+   ============================================================ */
+.ns-disclaimer {
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 0.8125rem;
+  color: var(--slate-500);
+  line-height: 1.6;
+}
+
+.ns-disclaimer__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ============================================================
+   LOADING OVERLAY & HUD
+   ============================================================ */
+.ns-loading-hud {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 29, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  color: #fff;
+}
+
+.ns-loading-hud--active {
+  display: flex;
+}
+
+.ns-radar-spinner {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--cyan-accent);
+  border-right-color: var(--primary-accent);
+  animation: radarSpin 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+  position: relative;
+  box-shadow: 0 0 30px rgba(2, 132, 199, 0.4);
+}
+
+@keyframes radarSpin {
+  to { transform: rotate(360deg); }
+}
+
+.ns-loading-title {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.ns-loading-steps {
+  font-size: 0.875rem;
+  color: var(--slate-400);
+  text-align: center;
+  max-width: 380px;
+}
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+.ns-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--navy-950);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-xl);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+  border: 1px solid var(--navy-800);
+}
+
+.ns-toast--show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.ns-footer {
+  border-top: 1px solid var(--slate-200);
+  background: var(--surface-white);
+  padding: 24px 20px;
+  font-size: 0.75rem;
+  color: var(--slate-400);
+  text-align: center;
+  margin-top: auto;
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+@media (max-width: 900px) {
+  .ns-diagnosis-banner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .ns-diagnosis-left {
+    align-items: center;
+  }
+  .ns-results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ns-hero__title {
+    font-size: 1.875rem;
+  }
+  .ns-navbar__meta .ns-status-pill {
+    display: none;
+  }
+  .ns-telemetry-grid {
+    grid-template-columns: 1fr;
+  }
+  .ns-scan-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ============================================================
+   PRINT STYLESHEET (Clinical Report Output)
+   ============================================================ */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+  .ns-navbar, .ns-actions-bar, .ns-footer, .ns-btn, .ns-disclaimer {
+    display: none !important;
+  }
+  .ns-card, .ns-diagnosis-banner, .ns-vis-stage {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  .ns-vis-stage {
+    background: #fff !important;
+  }
+}
