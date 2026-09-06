@@ -2,10 +2,11 @@ import os
 import numpy as np
 from PIL import Image
 
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, send_file
 
 import tensorflow as tf
 from ultralytics import YOLO
+from services.pdf_service import generate_pdf_report
 # ============================================================
 # FLASK APP
 # ============================================================
@@ -353,25 +354,45 @@ def predict():
         "pituitary  :",
         f"{prediction[3] * 100:.2f}%"
     )
-
     # ==================================================
     # 4. CONFIDENCE CHECK
     # ==================================================
 
     if classification_confidence < CLASSIFICATION_THRESHOLD:
 
-        return render_template(
-            "results.html",
-            filename=filename,
-            prediction="Uncertain",
-            confidence=classification_confidence * 100,
-            probabilities=prediction * 100,
-            segmentation_detected=False,
-            yolo_confidence=0,
-            tumor_area=0,
-            number_of_masks=0,
-            result_image=None
-        )
+      report_filename = (
+        "report_" +
+        os.path.splitext(filename)[0] +
+        ".pdf"
+    )
+
+      report_path = os.path.join(
+        "reports",
+        report_filename
+    )
+
+      generate_pdf_report(
+        output_path=report_path,
+        filename=filename,
+        prediction="Uncertain",
+        classification_confidence=
+            classification_confidence * 100,
+        probabilities=prediction * 100
+    )
+
+      return render_template(
+        "results.html",
+        filename=filename,
+        prediction="Uncertain",
+        confidence=classification_confidence * 100,
+        probabilities=prediction * 100,
+        segmentation_detected=False,
+        yolo_confidence=0,
+        tumor_area=0,
+        number_of_masks=0,
+        result_image=None,
+        report_filename=report_filename
+    )               
 
     # ==================================================
     # 5. NO TUMOR
@@ -381,7 +402,25 @@ def predict():
 
         print("\nNo tumor detected.")
         print("YOLO segmentation skipped.")
+        report_filename = (
+            "report_" +
+            os.path.splitext(filename)[0] +
+            ".pdf"
+        )
 
+        report_path = os.path.join(
+            "reports",
+            report_filename
+        )
+
+        generate_pdf_report(
+            output_path=report_path,
+            filename=filename,
+            prediction=predicted_class,
+            classification_confidence=
+                classification_confidence * 100,
+            probabilities=prediction * 100
+        )
         return render_template(
             "results.html",
             filename=filename,
@@ -392,7 +431,8 @@ def predict():
             yolo_confidence=0,
             tumor_area=0,
             number_of_masks=0,
-            result_image=None
+            result_image=None,
+            report_filename=report_filename
         )
 
     # ==================================================
@@ -408,6 +448,51 @@ def predict():
 
     # ==================================================
     # 7. FINAL RESULT
+    # ==================================================
+
+       # ==================================================
+    # 7. GENERATE PDF REPORT
+    # ==================================================
+
+    report_filename = (
+        "report_" +
+        os.path.splitext(filename)[0] +
+        ".pdf"
+    )
+
+    report_path = os.path.join(
+        "reports",
+        report_filename
+    )
+
+    generate_pdf_report(
+        output_path=report_path,
+        filename=filename,
+        prediction=predicted_class,
+        classification_confidence=
+            classification_confidence * 100,
+        probabilities=prediction * 100,
+        segmentation_detected=
+            yolo_result["detected"],
+        yolo_confidence=
+            yolo_result["yolo_confidence"] * 100,
+        tumor_area=
+            yolo_result["tumor_area_percent"],
+        number_of_masks=
+            yolo_result["number_of_masks"],
+        tumor_pixels=
+            yolo_result["tumor_pixels"],
+        result_image=
+            yolo_result["result_image"]
+    )
+
+    print(
+        "PDF report generated:",
+        report_path
+    )
+
+    # ==================================================
+    # 8. FINAL RESULT
     # ==================================================
 
     return render_template(
@@ -437,7 +522,10 @@ def predict():
             yolo_result["number_of_masks"],
 
         result_image=
-            yolo_result["result_image"]
+            yolo_result["result_image"],
+
+        report_filename=
+            report_filename
     )
 
 @app.route("/results/<filename>")
@@ -445,6 +533,20 @@ def results_file(filename):
     return send_from_directory(
         "results",
         filename
+    )
+@app.route("/download-report/<filename>")
+def download_report(filename):
+    report_path = os.path.join(
+        "reports",
+        filename
+    )
+
+    if not os.path.exists(report_path):
+        return "Report not found.", 404
+
+    return send_file(
+        report_path,
+        as_attachment=True
     )
 
 # ============================================================

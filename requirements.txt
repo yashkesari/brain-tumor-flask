@@ -4,4 +4,4 @@ ultralytics
 Pillow
 numpy
 matplotlib
-Werkzeug
+Werkzeugreportlab
