@@ -482,14 +482,6 @@ def education_detail(tumor_type):
     )
 
 
-# ============================================================
-# HEALTHCARE FINDER
-# ============================================================
-
-@app.route("/healthcare-finder")
-def healthcare_finder():
-    return render_template("healthcare.html")
-
 
 # ============================================================
 # YOLO SEGMENTATION (existing — unchanged)
