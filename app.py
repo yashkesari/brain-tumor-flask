@@ -2,11 +2,18 @@ import os
 import numpy as np
 from PIL import Image
 
-from flask import Flask, render_template, request, send_from_directory, send_file
+from flask import (
+    Flask, render_template, request,
+    send_from_directory, send_file, jsonify
+)
+from werkzeug.utils import secure_filename
 
 import tensorflow as tf
 from ultralytics import YOLO
 from services.pdf_service import generate_pdf_report
+from services.ocr_service import extract_report
+from services.ai_service import analyze_report
+
 # ============================================================
 # FLASK APP
 # ============================================================
@@ -20,9 +27,21 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = "uploads"
 RESULT_FOLDER = "results"
+REPORT_UPLOAD_FOLDER = "report_uploads"
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULT_FOLDER, exist_ok=True)
+os.makedirs(REPORT_UPLOAD_FOLDER, exist_ok=True)
+os.makedirs("reports", exist_ok=True)
+
+
+# ============================================================
+# ALLOWED EXTENSIONS
+# ============================================================
+
+MRI_ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".pdf"}
+REPORT_ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".pdf"}
+MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
 
 
 # ============================================================
@@ -79,6 +98,117 @@ CLASS_NAMES = [
 CLASSIFICATION_THRESHOLD = 0.70
 YOLO_CONFIDENCE_THRESHOLD = 0.25
 
+
+# ============================================================
+# HELPERS
+# ============================================================
+
+def allowed_file(filename, allowed_extensions):
+    """Check if a filename has an allowed extension."""
+    if not filename:
+        return False
+    ext = os.path.splitext(filename)[1].lower()
+    return ext in allowed_extensions
+
+
+def extract_image_from_pdf(pdf_path):
+    """
+    Extract a single MRI image from a PDF.
+
+    Strategy:
+        1. Try to extract embedded raster images.
+        2. If exactly one usable image found, return it.
+        3. If multiple images found, return None with a message.
+        4. If no images found, render the first page as an image.
+
+    Returns:
+        (PIL.Image or None, error_message or None)
+    """
+    import fitz  # pymupdf
+
+    try:
+        doc = fitz.open(pdf_path)
+    except Exception:
+        return None, "Unable to read the PDF file."
+
+    if doc.page_count == 0:
+        doc.close()
+        return None, "The PDF file contains no pages."
+
+    # --------------------------------------------------
+    # Try extracting embedded raster images
+    # --------------------------------------------------
+    extracted_images = []
+
+    for page_num in range(doc.page_count):
+        page = doc[page_num]
+        image_list = page.get_images(full=True)
+
+        for img_info in image_list:
+            xref = img_info[0]
+            try:
+                base_image = doc.extract_image(xref)
+                if base_image and base_image.get("image"):
+                    img_bytes = base_image["image"]
+                    from io import BytesIO
+                    pil_img = Image.open(BytesIO(img_bytes))
+
+                    # Only consider images large enough to be MRI
+                    w, h = pil_img.size
+                    if w >= 64 and h >= 64:
+                        extracted_images.append(pil_img)
+            except Exception:
+                continue
+
+    doc_for_render = doc  # keep open for potential render
+
+    # --------------------------------------------------
+    # Evaluate extracted images
+    # --------------------------------------------------
+    if len(extracted_images) == 1:
+        doc_for_render.close()
+        return extracted_images[0].convert("RGB"), None
+
+    if len(extracted_images) > 1:
+        doc_for_render.close()
+        return None, (
+            "This PDF contains multiple image candidates. "
+            "Please upload the MRI image directly as "
+            "JPG, JPEG, or PNG."
+        )
+
+    # --------------------------------------------------
+    # No embedded images — render first page
+    # --------------------------------------------------
+    try:
+        page = doc_for_render[0]
+        matrix = fitz.Matrix(3, 3)  # 3x resolution
+        pixmap = page.get_pixmap(matrix=matrix)
+
+        img_data = np.frombuffer(
+            pixmap.samples,
+            dtype=np.uint8
+        )
+
+        if pixmap.n == 4:
+            img_data = img_data.reshape(
+                pixmap.height, pixmap.width, 4
+            )
+            pil_img = Image.fromarray(img_data[:, :, :3])
+        else:
+            img_data = img_data.reshape(
+                pixmap.height, pixmap.width, 3
+            )
+            pil_img = Image.fromarray(img_data)
+
+        doc_for_render.close()
+        return pil_img.convert("RGB"), None
+
+    except Exception:
+        doc_for_render.close()
+        return None, "Unable to render MRI image from the PDF."
+
+
 # ============================================================
 # HOME PAGE
 # ============================================================
@@ -90,7 +220,7 @@ def home():
 
 
 # ============================================================
-# MRI UPLOAD
+# YOLO SEGMENTATION (existing — unchanged)
 # ============================================================
 
 def run_yolo_segmentation(image_path):
@@ -243,6 +373,11 @@ def run_yolo_segmentation(image_path):
         "result_image": result_filename
     }
 
+
+# ============================================================
+# MRI ANALYSIS — POST /predict (existing pipeline preserved)
+# ============================================================
+
 @app.route("/predict", methods=["POST"])
 def predict():
 
@@ -251,7 +386,7 @@ def predict():
     # ==================================================
 
     if "mri" not in request.files:
-        return "No MRI uploaded."
+        return "Please upload a supported MRI file: JPG, JPEG, PNG, or PDF."
 
     file = request.files["mri"]
 
@@ -259,13 +394,24 @@ def predict():
         return "No MRI selected."
 
     # ==================================================
+    # 1.5 VALIDATE FILE
+    # ==================================================
+
+    original_filename = file.filename
+    filename = secure_filename(original_filename)
+
+    if not filename:
+        return "Invalid filename."
+
+    if not allowed_file(filename, MRI_ALLOWED_EXTENSIONS):
+        return "Please upload a supported MRI file: JPG, JPEG, PNG, or PDF."
+
+    # ==================================================
     # 2. SAVE MRI
     # ==================================================
 
-    filename = file.filename
-
     upload_path = os.path.join(
-        "uploads",
+        UPLOAD_FOLDER,
         filename
     )
 
@@ -277,6 +423,40 @@ def predict():
 
     print("Filename:", filename)
     print("Path:", upload_path)
+
+    # ==================================================
+    # 2.5 PDF — EXTRACT MRI IMAGE
+    # ==================================================
+
+    ext = os.path.splitext(filename)[1].lower()
+
+    if ext == ".pdf":
+        print("\nPDF detected — extracting MRI image...")
+
+        pil_image, error_msg = extract_image_from_pdf(
+            upload_path
+        )
+
+        if pil_image is None:
+            return error_msg or (
+                "Unable to extract an MRI image from the PDF."
+            )
+
+        # Save extracted image as PNG for the pipeline
+        extracted_filename = (
+            os.path.splitext(filename)[0] + "_extracted.png"
+        )
+        extracted_path = os.path.join(
+            UPLOAD_FOLDER,
+            extracted_filename
+        )
+        pil_image.save(extracted_path)
+
+        # Use extracted image for the rest of the pipeline
+        upload_path = extracted_path
+        filename = extracted_filename
+
+        print("Extracted MRI image:", extracted_path)
 
     # ==================================================
     # 3. CLASSIFIER
@@ -447,10 +627,6 @@ def predict():
     )
 
     # ==================================================
-    # 7. FINAL RESULT
-    # ==================================================
-
-       # ==================================================
     # 7. GENERATE PDF REPORT
     # ==================================================
 
@@ -528,12 +704,139 @@ def predict():
             report_filename
     )
 
+
+# ============================================================
+# REPORT ANALYSIS — POST /analyze-report (independent)
+# ============================================================
+
+@app.route("/analyze-report", methods=["POST"])
+def analyze_report_route():
+
+    # ==================================================
+    # 1. CHECK UPLOAD
+    # ==================================================
+
+    if "report" not in request.files:
+        return render_template(
+            "report_results.html",
+            error="Please upload a supported medical report: PDF, JPG, JPEG, or PNG."
+        )
+
+    file = request.files["report"]
+
+    if file.filename == "":
+        return render_template(
+            "report_results.html",
+            error="No file selected."
+        )
+
+    # ==================================================
+    # 2. VALIDATE FILE
+    # ==================================================
+
+    original_filename = file.filename
+    filename = secure_filename(original_filename)
+
+    if not filename:
+        return render_template(
+            "report_results.html",
+            error="Invalid filename."
+        )
+
+    if not allowed_file(filename, REPORT_ALLOWED_EXTENSIONS):
+        return render_template(
+            "report_results.html",
+            error="Please upload a supported medical report: PDF, JPG, JPEG, or PNG."
+        )
+
+    # ==================================================
+    # 3. SAVE FILE
+    # ==================================================
+
+    upload_path = os.path.join(
+        REPORT_UPLOAD_FOLDER,
+        filename
+    )
+
+    file.save(upload_path)
+
+    print("\n" + "=" * 60)
+    print("REPORT UPLOADED")
+    print("=" * 60)
+
+    print("Filename:", filename)
+    print("Path:", upload_path)
+
+    # ==================================================
+    # 4. OCR + NLP ANALYSIS
+    # ==================================================
+
+    try:
+        print("\nExtracting report text...")
+
+        report_data = extract_report(upload_path)
+
+        raw_text = report_data.get("raw_text", "")
+
+        print("OCR text extracted.")
+        print("Characters:", len(raw_text))
+
+        if not raw_text or len(raw_text.strip()) < 10:
+            return render_template(
+                "report_results.html",
+                filename=filename,
+                error="We could not extract readable text from this document. Please try a clearer scan."
+            )
+
+        print("\nRunning NLP analysis...")
+
+        analysis = analyze_report(report_data)
+
+        print("Document type:", analysis.get("document_type"))
+        print("Diagnosis:", analysis.get("diagnosis"))
+        print("Report analysis completed.")
+
+    except Exception as e:
+        print("Report analysis failed:", str(e))
+
+        return render_template(
+            "report_results.html",
+            filename=filename,
+            error=f"An error occurred while processing the document: {str(e)}"
+        )
+
+    # ==================================================
+    # 5. CLEAN UP TEMPORARY FILES
+    # ==================================================
+
+    # Report uploads are kept until the response is sent.
+    # They are not model files and can be cleaned up.
+    # For now, we keep them for debugging.
+
+    # ==================================================
+    # 6. RENDER RESULTS
+    # ==================================================
+
+    return render_template(
+        "report_results.html",
+        filename=filename,
+        document_type=analysis.get("document_type", "unknown"),
+        raw_text=raw_text,
+        analysis=analysis
+    )
+
+
+# ============================================================
+# EXISTING ROUTES (preserved)
+# ============================================================
+
 @app.route("/results/<filename>")
 def results_file(filename):
     return send_from_directory(
         "results",
         filename
     )
+
 @app.route("/download-report/<filename>")
 def download_report(filename):
     report_path = os.path.join(
@@ -548,6 +851,7 @@ def download_report(filename):
         report_path,
         as_attachment=True
     )
+
 
 # ============================================================
 # START FLASK

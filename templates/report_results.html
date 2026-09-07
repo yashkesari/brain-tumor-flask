@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI — Report Analysis{% if filename %} [{{ filename }}]{% endif %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ====================================================
+         APP NAVBAR
+         ==================================================== -->
+    <header class="ns-navbar">
+        <div class="ns-navbar__container">
+            <a href="/" class="ns-brand">
+                <div class="ns-brand__logo-wrap" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
+                        <path d="M9 22h6"/>
+                        <path d="M12 2v6"/>
+                        <path d="M8 8h8"/>
+                    </svg>
+                </div>
+                <div class="ns-brand__text">
+                    <div class="ns-brand__name">
+                        NeuroScan <span>AI</span>
+                        <span class="ns-brand__badge">REPORT</span>
+                    </div>
+                    <span class="ns-brand__tagline">Medical Report OCR &amp; NLP Analysis</span>
+                </div>
+            </a>
+
+            <div class="ns-navbar__meta">
+                <a href="/" class="ns-btn ns-btn--secondary ns-btn--sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    New Analysis
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================
+         REPORT CONTAINER
+         ==================================================== -->
+    <main class="ns-main">
+        <div class="ns-container">
+
+            <!-- Report Header -->
+            <div class="ns-report-header">
+                <div>
+                    <h1 class="ns-report-header__title">MRI Medical Report Analysis</h1>
+                    <p class="ns-report-header__subtitle">
+                        OCR-based text extraction and structured NLP analysis
+                    </p>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 ERROR STATE
+                 ================================================ -->
+            {% if error %}
+            <div class="ns-error-box">
+                <div class="ns-error-box__icon">⚠️</div>
+                <div class="ns-error-box__text">
+                    {{ error }}
+                    <div style="margin-top: 12px;">
+                        <a href="/" class="ns-btn ns-btn--secondary ns-btn--sm">Return Home</a>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+
+            <!-- ================================================
+                 DOCUMENT TYPE BANNER
+                 ================================================ -->
+            {% if document_type == 'patient_report' %}
+            <div class="ns-report-analysis-banner ns-report-analysis-banner--patient">
+                <div class="ns-report-analysis-banner__icon">📋</div>
+                <div>
+                    <div class="ns-report-analysis-banner__title">Patient Medical Report</div>
+                    <div class="ns-report-analysis-banner__desc">This document has been identified as an individual patient medical report.</div>
+                </div>
+            </div>
+            {% elif document_type == 'guideline_reference' %}
+            <div class="ns-report-analysis-banner ns-report-analysis-banner--guideline">
+                <div class="ns-report-analysis-banner__icon">📖</div>
+                <div>
+                    <div class="ns-report-analysis-banner__title">Guideline / Reference Document</div>
+                    <div class="ns-report-analysis-banner__desc">This document appears to be a clinical guideline or reference document. Individual patient report analysis is not appropriate for this document.</div>
+                </div>
+            </div>
+            {% else %}
+            <div class="ns-report-analysis-banner ns-report-analysis-banner--unknown">
+                <div class="ns-report-analysis-banner__icon">❓</div>
+                <div>
+                    <div class="ns-report-analysis-banner__title">Unidentified Document Type</div>
+                    <div class="ns-report-analysis-banner__desc">The uploaded document could not be confidently identified as an individual medical report.</div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="ns-results-grid" style="grid-template-columns: 1fr;">
+
+                <!-- ================================================
+                     DOCUMENT INFORMATION
+                     ================================================ -->
+                <div class="ns-card">
+                    <div class="ns-card__header">
+                        <div class="ns-card__header-left">
+                            <div class="ns-icon-badge ns-icon-badge--blue" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="ns-card__title">Document Information</h2>
+                                <p class="ns-card__subtitle">Upload and extraction details</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="ns-info-table">
+                        <tr>
+                            <td>Filename</td>
+                            <td>{{ filename }}</td>
+                        </tr>
+                        <tr>
+                            <td>Document Type</td>
+                            <td>
+                                {% if document_type == 'patient_report' %}
+                                <span class="ns-doc-type-badge ns-doc-type-badge--patient">Patient Report</span>
+                                {% elif document_type == 'guideline_reference' %}
+                                <span class="ns-doc-type-badge ns-doc-type-badge--guideline">Guideline / Reference</span>
+                                {% else %}
+                                <span class="ns-doc-type-badge ns-doc-type-badge--unknown">Unknown</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>OCR Status</td>
+                            <td>
+                                {% if raw_text %}
+                                <span style="color: var(--healthy-color); font-weight: 600;">✓ Text Extracted ({{ raw_text|length }} characters)</span>
+                                {% else %}
+                                <span style="color: var(--glioma-color); font-weight: 600;">✗ No Text Extracted</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- ================================================
+                     REPORT SUMMARY
+                     ================================================ -->
+                {% if analysis and analysis.summary and analysis.summary.items %}
+                <div class="ns-card">
+                    <div class="ns-card__header">
+                        <div class="ns-card__header-left">
+                            <div class="ns-icon-badge ns-icon-badge--teal" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="ns-card__title">{{ analysis.summary.title }}</h2>
+                                <p class="ns-card__subtitle">Key extracted findings from the medical report</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="ns-summary-table">
+                        {% for item in analysis.summary.items %}
+                        <tr>
+                            <td>{{ item.section }}</td>
+                            <td>{{ item.text }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+
+                <!-- ================================================
+                     STRUCTURED FINDINGS
+                     ================================================ -->
+                {% if analysis and (document_type == 'patient_report' or (document_type == 'unknown' and (analysis.diagnosis or analysis.tumor_terms or analysis.locations or analysis.measurements or analysis.symptoms or analysis.progression))) %}
+                <div class="ns-card">
+                    <div class="ns-card__header">
+                        <div class="ns-card__header-left">
+                            <div class="ns-icon-badge ns-icon-badge--emerald" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="8" y1="6" x2="21" y2="6"/>
+                                    <line x1="8" y1="12" x2="21" y2="12"/>
+                                    <line x1="8" y1="18" x2="21" y2="18"/>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="ns-card__title">Structured Findings</h2>
+                                <p class="ns-card__subtitle">Extracted medical information from the report text</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if analysis.diagnosis %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Diagnosis</div>
+                        <div class="ns-findings-section__text">{{ analysis.diagnosis }}</div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis.tumor_terms %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Tumor-Related Terms</div>
+                        <div class="ns-findings-tags">
+                            {% for term in analysis.tumor_terms %}
+                            <span class="ns-findings-tag ns-findings-tag--tumor">{{ term }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis.locations %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Anatomical Locations</div>
+                        <div class="ns-findings-tags">
+                            {% for loc in analysis.locations %}
+                            <span class="ns-findings-tag ns-findings-tag--location">{{ loc }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis.measurements %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Measurements</div>
+                        <div class="ns-findings-tags">
+                            {% for m in analysis.measurements %}
+                            <span class="ns-findings-tag">{{ m }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis.symptoms %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Symptoms</div>
+                        <div class="ns-findings-tags">
+                            {% for s in analysis.symptoms %}
+                            <span class="ns-findings-tag ns-findings-tag--symptom">{{ s }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis.treatment %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Treatment History</div>
+                        <div class="ns-findings-tags">
+                            {% if analysis.treatment.surgery %}
+                            <span class="ns-findings-tag ns-findings-tag--treatment">✓ Surgery</span>
+                            {% endif %}
+                            {% if analysis.treatment.chemotherapy %}
+                            <span class="ns-findings-tag ns-findings-tag--treatment">✓ Chemotherapy</span>
+                            {% endif %}
+                            {% if analysis.treatment.radiotherapy %}
+                            <span class="ns-findings-tag ns-findings-tag--treatment">✓ Radiotherapy</span>
+                            {% endif %}
+                            {% if analysis.treatment.temozolomide %}
+                            <span class="ns-findings-tag ns-findings-tag--treatment">✓ Temozolomide</span>
+                            {% endif %}
+                            {% if not analysis.treatment.surgery and not analysis.treatment.chemotherapy and not analysis.treatment.radiotherapy and not analysis.treatment.temozolomide %}
+                            <span style="color: var(--slate-400); font-size: 0.875rem;">No treatment history mentioned</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis.progression %}
+                    <div class="ns-findings-section">
+                        <div class="ns-findings-section__title">Progression / Changes</div>
+                        <div class="ns-findings-tags">
+                            {% for p in analysis.progression %}
+                            <span class="ns-findings-tag">{{ p }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% endif %}
+
+                <!-- ================================================
+                     RAW OCR TEXT (Collapsible)
+                     ================================================ -->
+                {% if raw_text %}
+                <div class="ns-card">
+                    <div class="ns-ocr-text-box">
+                        <details>
+                            <summary>View Extracted OCR Text</summary>
+                            <div class="ns-ocr-text-box__content">{{ raw_text }}</div>
+                        </details>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+            <!-- ================================================
+                 MEDICAL DISCLAIMER
+                 ================================================ -->
+            <div class="ns-disclaimer" style="margin-top: 28px;">
+                <div class="ns-disclaimer__icon" aria-hidden="true">⚕️</div>
+                <div>
+                    <strong>Research Prototype &amp; Academic Disclaimer:</strong> NeuroScan AI is designed for computational research, academic presentation, and algorithmic demonstration. This report analysis is generated by OCR and NLP algorithms which may contain errors. It does not provide a certified medical diagnosis and should never replace evaluation by a qualified medical professional.
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div id="ns-toast" class="ns-toast" role="status" aria-live="polite">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--teal-accent);">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span id="ns-toast-msg">Copied to clipboard</span>
+    </div>
+
+    <!-- ====================================================
+         FOOTER
+         ==================================================== -->
+    <footer class="ns-footer">
+        <div class="ns-container">
+            <strong>NeuroScan AI</strong> &bull; AI-Assisted Brain MRI &amp; Medical Report Analysis &bull; Research Prototype
+        </div>
+    </footer>
+
+    <!-- Client Script -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

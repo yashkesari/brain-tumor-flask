@@ -1285,6 +1285,511 @@ a:hover {
 }
 
 /* ============================================================
+   REPORT PAGE HEADER
+   ============================================================ */
+.ns-report-header {
+  margin-bottom: 24px;
+}
+
+.ns-report-header__title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy-950);
+  margin-bottom: 4px;
+}
+
+.ns-report-header__subtitle {
+  font-size: 0.9375rem;
+  color: var(--slate-500);
+}
+
+/* ============================================================
+   TWO-MODULE LAYOUT (INDEX PAGE)
+   ============================================================ */
+.ns-modules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 900px) {
+  .ns-modules-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ns-module-card {
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--trans-normal), border-color var(--trans-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.ns-module-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-border);
+}
+
+.ns-module-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.ns-module-card__icon--mri {
+  background: linear-gradient(135deg, var(--primary-subtle), var(--cyan-subtle));
+  color: var(--primary-accent);
+  border: 1px solid var(--primary-border);
+}
+
+.ns-module-card__icon--report {
+  background: linear-gradient(135deg, var(--teal-subtle), var(--healthy-subtle));
+  color: var(--teal-accent);
+  border: 1px solid var(--teal-border);
+}
+
+.ns-module-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin-bottom: 6px;
+}
+
+.ns-module-card__subtitle {
+  font-size: 0.875rem;
+  color: var(--slate-500);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.ns-module-upload-zone {
+  border: 2px dashed var(--slate-300);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, var(--surface-white) 0%, var(--slate-50) 100%);
+  padding: 28px 16px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--trans-normal);
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.ns-module-upload-zone:hover,
+.ns-module-upload-zone--dragover {
+  border-color: var(--primary-accent);
+  background: var(--primary-subtle);
+}
+
+.ns-module-upload-zone__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ns-module-upload-zone__icon {
+  margin-bottom: 12px;
+  color: var(--slate-400);
+}
+
+.ns-module-upload-zone__text {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--navy-800);
+  margin-bottom: 4px;
+}
+
+.ns-module-upload-zone__hint {
+  font-size: 0.8125rem;
+  color: var(--slate-400);
+}
+
+.ns-module-file-info {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.ns-module-file-info--active {
+  display: flex;
+}
+
+.ns-module-file-info__name {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--navy-800);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.ns-module-file-info__size {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--slate-400);
+  flex-shrink: 0;
+}
+
+.ns-module-file-info__remove {
+  background: none;
+  border: none;
+  color: var(--slate-400);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all var(--trans-fast);
+  flex-shrink: 0;
+}
+
+.ns-module-file-info__remove:hover {
+  color: var(--glioma-color);
+  background: var(--glioma-subtle);
+}
+
+.ns-module-preview {
+  display: none;
+  margin-bottom: 16px;
+}
+
+.ns-module-preview--active {
+  display: block;
+}
+
+.ns-module-preview__img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--navy-900);
+  border: 1px solid var(--navy-800);
+}
+
+.ns-disclaimer-banner {
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.8125rem;
+  color: var(--slate-500);
+  line-height: 1.6;
+}
+
+.ns-disclaimer-banner__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   REPORT ANALYSIS RESULTS PAGE
+   ============================================================ */
+.ns-report-analysis-banner {
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ns-report-analysis-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.ns-report-analysis-banner--patient::before {
+  background: var(--teal-accent);
+}
+
+.ns-report-analysis-banner--guideline::before {
+  background: var(--pituitary-color);
+}
+
+.ns-report-analysis-banner--unknown::before {
+  background: var(--slate-400);
+}
+
+.ns-report-analysis-banner--error::before {
+  background: var(--glioma-color);
+}
+
+.ns-report-analysis-banner__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+}
+
+.ns-report-analysis-banner--patient .ns-report-analysis-banner__icon {
+  background: var(--teal-subtle);
+  border: 1px solid var(--teal-border);
+}
+
+.ns-report-analysis-banner--guideline .ns-report-analysis-banner__icon {
+  background: var(--pituitary-subtle);
+  border: 1px solid var(--pituitary-border);
+}
+
+.ns-report-analysis-banner--unknown .ns-report-analysis-banner__icon {
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+}
+
+.ns-report-analysis-banner--error .ns-report-analysis-banner__icon {
+  background: var(--glioma-subtle);
+  border: 1px solid var(--glioma-border);
+}
+
+.ns-report-analysis-banner__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin-bottom: 2px;
+}
+
+.ns-report-analysis-banner__desc {
+  font-size: 0.875rem;
+  color: var(--slate-500);
+}
+
+.ns-doc-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ns-doc-type-badge--patient {
+  background: var(--teal-subtle);
+  color: var(--teal-accent);
+  border: 1px solid var(--teal-border);
+}
+
+.ns-doc-type-badge--guideline {
+  background: var(--pituitary-subtle);
+  color: var(--pituitary-color);
+  border: 1px solid var(--pituitary-border);
+}
+
+.ns-doc-type-badge--unknown {
+  background: var(--slate-100);
+  color: var(--slate-500);
+  border: 1px solid var(--slate-200);
+}
+
+.ns-findings-section {
+  margin-bottom: 20px;
+}
+
+.ns-findings-section__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate-400);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.ns-findings-section__text {
+  font-size: 0.9375rem;
+  color: var(--navy-800);
+  line-height: 1.6;
+}
+
+.ns-findings-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ns-findings-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: var(--primary-subtle);
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.ns-findings-tag--location {
+  background: var(--cyan-subtle);
+  color: var(--cyan-accent);
+  border-color: var(--cyan-border);
+}
+
+.ns-findings-tag--symptom {
+  background: var(--uncertain-subtle);
+  color: var(--uncertain-color);
+  border-color: var(--uncertain-border);
+}
+
+.ns-findings-tag--treatment {
+  background: var(--healthy-subtle);
+  color: var(--healthy-color);
+  border-color: var(--healthy-border);
+}
+
+.ns-findings-tag--tumor {
+  background: var(--glioma-subtle);
+  color: var(--glioma-color);
+  border-color: var(--glioma-border);
+}
+
+.ns-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ns-summary-table td {
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--slate-100);
+  vertical-align: top;
+}
+
+.ns-summary-table td:first-child {
+  font-weight: 600;
+  color: var(--navy-800);
+  width: 200px;
+  white-space: nowrap;
+}
+
+.ns-summary-table td:last-child {
+  color: var(--slate-500);
+}
+
+.ns-summary-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ns-ocr-text-box {
+  margin-top: 8px;
+}
+
+.ns-ocr-text-box summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-accent);
+  padding: 10px 0;
+  user-select: none;
+}
+
+.ns-ocr-text-box summary:hover {
+  color: var(--primary);
+}
+
+.ns-ocr-text-box__content {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--slate-500);
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ns-info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ns-info-table td {
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.ns-info-table td:first-child {
+  font-weight: 600;
+  color: var(--navy-800);
+  width: 160px;
+}
+
+.ns-info-table td:last-child {
+  color: var(--slate-500);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.ns-info-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ns-error-box {
+  background: var(--glioma-subtle);
+  border: 1px solid var(--glioma-border);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.ns-error-box__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.ns-error-box__text {
+  font-size: 0.9375rem;
+  color: var(--glioma-color);
+  line-height: 1.5;
+}
+
+/* ============================================================
    PRINT STYLESHEET (Clinical Report Output)
    ============================================================ */
 @media print {
