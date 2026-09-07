@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI — Symptom Risk Engine</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <style>
+        .ns-symptom-group {
+            margin-bottom: 24px;
+            padding: 24px;
+            background: var(--surface-white);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-lg);
+        }
+
+        .ns-symptom-group:hover {
+            border-color: var(--slate-300);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .ns-symptom-group__title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--navy-900);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ns-symptom-question {
+            display: block;
+            margin-top: 16px;
+        }
+
+        .ns-symptom-question__text {
+            font-size: 0.9375rem;
+            color: var(--slate-700);
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .ns-radio-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .ns-radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            color: var(--slate-600);
+            background: var(--slate-50);
+            padding: 8px 16px;
+            border: 1px solid var(--slate-200);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .ns-radio-label:hover {
+            background: var(--slate-100);
+        }
+
+        .ns-radio-label input[type="radio"] {
+            accent-color: var(--primary-accent);
+            width: 16px;
+            height: 16px;
+        }
+
+        .ns-radio-label:has(input:checked) {
+            background: var(--primary-subtle);
+            border-color: var(--primary-accent);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ====================================================
+         APP NAVBAR
+         ==================================================== -->
+    <header class="ns-navbar">
+        <div class="ns-navbar__container">
+            <a href="/" class="ns-brand">
+                <div class="ns-brand__logo-wrap" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
+                        <path d="M9 22h6"/>
+                        <path d="M12 2v6"/>
+                        <path d="M8 8h8"/>
+                    </svg>
+                </div>
+                <div class="ns-brand__text">
+                    <div class="ns-brand__name">
+                        NeuroScan <span>AI</span>
+                        <span class="ns-brand__badge">RISK ENGINE</span>
+                    </div>
+                    <span class="ns-brand__tagline">Symptom Assessment Tool</span>
+                </div>
+            </a>
+
+            <div class="ns-navbar__meta">
+                <a href="/" class="ns-btn ns-btn--secondary ns-btn--sm">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================
+         MAIN CONTENT
+         ==================================================== -->
+    <main class="ns-main">
+        <div class="ns-container">
+
+            <div class="ns-report-header" style="margin-bottom: 32px;">
+                <div class="ns-badge-pill" style="margin-bottom: 12px; background: #fff7ed; color: #ea580c; border-color: #fdba74;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                    Clinical Triage Engine
+                </div>
+                <h1 class="ns-report-header__title">Symptom-Based Risk Assessment</h1>
+                <p class="ns-report-header__subtitle">
+                    Answer the following questions about your symptoms to calculate neurological risk level and receive medical follow-up recommendations.
+                </p>
+            </div>
+
+            <form action="/analyze-symptoms" method="POST">
+                
+                <!-- 1. Headaches -->
+                <div class="ns-symptom-group">
+                    <h2 class="ns-symptom-group__title">🤕 Headaches</h2>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Do you experience new, persistent, or worsening headaches?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="headache_general" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="headache_general" value="no" checked> No</label>
+                        </div>
+                    </label>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Are your headaches worse in the morning or when lying down?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="headache_morning" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="headache_morning" value="no" checked> No</label>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 2. Seizures -->
+                <div class="ns-symptom-group">
+                    <h2 class="ns-symptom-group__title">⚡ Seizures</h2>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Have you recently experienced any unexplained seizures or convulsions?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="seizures" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="seizures" value="no" checked> No</label>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 3. Motor & Sensory -->
+                <div class="ns-symptom-group">
+                    <h2 class="ns-symptom-group__title">💪 Motor & Sensory Function</h2>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Do you feel weakness, numbness, or tingling, particularly on one side of your body or face?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="motor_weakness" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="motor_weakness" value="no" checked> No</label>
+                        </div>
+                    </label>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Are you having difficulty with balance, walking, or unsteadiness?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="balance_issues" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="balance_issues" value="no" checked> No</label>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 4. Vision & Hearing -->
+                <div class="ns-symptom-group">
+                    <h2 class="ns-symptom-group__title">👁️ Vision & Hearing</h2>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Are you experiencing blurred vision, double vision, or loss of peripheral vision?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="vision_changes" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="vision_changes" value="no" checked> No</label>
+                        </div>
+                    </label>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Have you noticed new, unexplained hearing loss or constant ringing in one ear?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="hearing_loss" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="hearing_loss" value="no" checked> No</label>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 5. Cognitive & Speech -->
+                <div class="ns-symptom-group">
+                    <h2 class="ns-symptom-group__title">🧠 Cognitive & Speech</h2>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Have you or others noticed changes in your memory, personality, or ability to concentrate?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="cognitive_changes" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="cognitive_changes" value="no" checked> No</label>
+                        </div>
+                    </label>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Are you having difficulty speaking, finding the right words, or understanding others?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="speech_issues" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="speech_issues" value="no" checked> No</label>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 6. Digestive -->
+                <div class="ns-symptom-group">
+                    <h2 class="ns-symptom-group__title">🤢 Digestive System</h2>
+                    <label class="ns-symptom-question">
+                        <span class="ns-symptom-question__text">Do you have unexplained nausea or vomiting, especially upon waking in the morning?</span>
+                        <div class="ns-radio-group">
+                            <label class="ns-radio-label"><input type="radio" name="nausea_morning" value="yes"> Yes</label>
+                            <label class="ns-radio-label"><input type="radio" name="nausea_morning" value="no" checked> No</label>
+                        </div>
+                    </label>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <button type="submit" class="ns-btn ns-btn--primary" style="padding: 16px 32px; font-size: 1.125rem;">
+                        Analyze Symptoms & Calculate Risk
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </main>
+
+    <!-- ====================================================
+         FOOTER
+         ==================================================== -->
+    <footer class="ns-footer">
+        <div class="ns-container">
+            <strong>NeuroScan AI</strong> &bull; AI-Assisted Brain MRI &amp; Medical Report Analysis &bull; Research Prototype
+        </div>
+    </footer>
+
+</body>
+</html>

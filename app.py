@@ -482,6 +482,88 @@ def education_detail(tumor_type):
     )
 
 
+# ============================================================
+# SYMPTOM-BASED RISK ENGINE
+# ============================================================
+
+@app.route("/symptoms", methods=["GET"])
+def symptoms_form():
+    return render_template("symptoms.html")
+
+
+@app.route("/analyze-symptoms", methods=["POST"])
+def analyze_symptoms():
+    # Retrieve form data
+    form = request.form
+
+    # Scoring configuration
+    # (score, is_red_flag, description)
+    symptom_weights = {
+        "seizures": (4, True, "New-onset seizures"),
+        "motor_weakness": (3, True, "Weakness or numbness on one side"),
+        "headache_morning": (3, True, "Headaches worse in the morning/lying down"),
+        "vision_changes": (2, False, "Blurred, double, or loss of vision"),
+        "speech_issues": (2, False, "Difficulty speaking or finding words"),
+        "balance_issues": (2, False, "Unsteady gait or balance problems"),
+        "cognitive_changes": (2, False, "Memory or personality changes"),
+        "nausea_morning": (2, False, "Unexplained nausea/vomiting"),
+        "headache_general": (1, False, "New or persistent general headaches"),
+        "hearing_loss": (1, False, "Unexplained hearing loss or tinnitus")
+    }
+
+    total_score = 0
+    has_red_flag = False
+    reported_symptoms = []
+
+    for key, (score, is_red_flag, desc) in symptom_weights.items():
+        if form.get(key) == "yes":
+            total_score += score
+            reported_symptoms.append({"name": desc, "red_flag": is_red_flag})
+            if is_red_flag:
+                has_red_flag = True
+
+    # Determine Risk Level
+    if total_score >= 5 or has_red_flag:
+        risk_level = "High Risk"
+        risk_color = "glioma" # Reusing CSS colors (red/orange)
+        recommendation = (
+            "Based on your symptoms, we strongly recommend seeking prompt medical evaluation from a neurologist "
+            "or visiting an urgent care/emergency facility. Symptoms such as yours warrant a comprehensive clinical "
+            "assessment, which may include neuroimaging (like an MRI or CT scan)."
+        )
+    elif total_score >= 3:
+        risk_level = "Moderate Risk"
+        risk_color = "meningioma" # Reusing CSS colors (amber)
+        recommendation = (
+            "Your symptoms indicate a moderate level of risk. While they could be caused by various common "
+            "conditions (such as migraines, stress, or inner ear issues), you should schedule an appointment "
+            "with your primary care physician for a proper evaluation."
+        )
+    elif total_score >= 1:
+        risk_level = "Low Risk"
+        risk_color = "pituitary" # Reusing CSS colors (blue)
+        recommendation = (
+            "Your reported symptoms currently indicate a low risk for severe neurological conditions. "
+            "Continue to monitor your symptoms. If they persist, worsen, or if you develop new symptoms, "
+            "please consult a healthcare professional."
+        )
+    else:
+        risk_level = "Minimal Risk"
+        risk_color = "notumor" # Reusing CSS colors (green)
+        recommendation = (
+            "You did not report any significant neurological warning signs. Maintain your routine health "
+            "checkups and a healthy lifestyle."
+        )
+
+    return render_template(
+        "symptom_results.html",
+        score=total_score,
+        risk_level=risk_level,
+        risk_color=risk_color,
+        recommendation=recommendation,
+        reported_symptoms=reported_symptoms
+    )
+
 
 # ============================================================
 # YOLO SEGMENTATION (existing — unchanged)

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI — Risk Engine Results</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ====================================================
+         APP NAVBAR
+         ==================================================== -->
+    <header class="ns-navbar">
+        <div class="ns-navbar__container">
+            <a href="/" class="ns-brand">
+                <div class="ns-brand__logo-wrap" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
+                        <path d="M9 22h6"/>
+                        <path d="M12 2v6"/>
+                        <path d="M8 8h8"/>
+                    </svg>
+                </div>
+                <div class="ns-brand__text">
+                    <div class="ns-brand__name">
+                        NeuroScan <span>AI</span>
+                        <span class="ns-brand__badge">RISK ENGINE</span>
+                    </div>
+                    <span class="ns-brand__tagline">Symptom Assessment Tool</span>
+                </div>
+            </a>
+
+            <div class="ns-navbar__meta">
+                <a href="/symptoms" class="ns-btn ns-btn--secondary ns-btn--sm" style="margin-right: 8px;">
+                    Retake Assessment
+                </a>
+                <a href="/" class="ns-btn ns-btn--primary ns-btn--sm">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================
+         MAIN CONTENT
+         ==================================================== -->
+    <main class="ns-main">
+        <div class="ns-container">
+
+            <div class="ns-report-header">
+                <div>
+                    <h1 class="ns-report-header__title">Symptom Risk Assessment Result</h1>
+                    <p class="ns-report-header__subtitle">
+                        Automated triage based on reported neurological and systemic indicators
+                    </p>
+                </div>
+            </div>
+
+            <!-- PRIMARY BANNER -->
+            <div class="ns-diagnosis-banner ns-diagnosis-banner--{{ risk_color }}" style="margin-top: 24px; margin-bottom: 24px;">
+                <div class="ns-diagnosis-left">
+                    <span class="ns-diagnosis-tag ns-diagnosis-tag--{{ risk_color }}">
+                        ● Risk Level
+                    </span>
+                    <div class="ns-diagnosis-name">
+                        {{ risk_level }}
+                    </div>
+                    <p class="ns-diagnosis-desc">
+                        {{ recommendation }}
+                    </p>
+                </div>
+
+                <!-- Score Gauge -->
+                <div class="ns-diagnosis-gauge">
+                    <div class="ns-gauge-score">{{ score }}<span style="font-size:1rem;color:var(--slate-400)">pts</span></div>
+                    <div class="ns-gauge-label">Severity Score</div>
+                </div>
+            </div>
+
+            <!-- REPORTED SYMPTOMS -->
+            <div class="ns-card" style="margin-bottom: 32px;">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--blue" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Symptoms Analyzed</h2>
+                            <p class="ns-card__subtitle">You reported the following indicators</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding: 24px;">
+                    {% if reported_symptoms %}
+                        <ul class="ns-tags" style="display:flex; flex-wrap:wrap; gap:12px; margin:0; padding:0; list-style:none;">
+                            {% for symp in reported_symptoms %}
+                                {% if symp.red_flag %}
+                                <li class="ns-tag ns-tag--orange" style="font-weight: 500;">
+                                    ⚠️ {{ symp.name }}
+                                </li>
+                                {% else %}
+                                <li class="ns-tag ns-tag--slate" style="font-weight: 500;">
+                                    {{ symp.name }}
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p style="color: var(--slate-500); font-style: italic;">No specific symptoms reported.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- NEXT STEPS / FOLLOW UP -->
+            <div class="ns-card" style="margin-bottom: 32px;">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--teal" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Recommended Follow-up</h2>
+                            <p class="ns-card__subtitle">Suggested actions based on your risk profile</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 24px;">
+                    <ul style="padding-left: 20px; color: var(--slate-600); line-height: 1.6;">
+                        {% if risk_level == 'High Risk' %}
+                            <li style="margin-bottom: 12px;"><strong>Seek Immediate Medical Attention:</strong> Schedule an urgent appointment with a neurologist or visit an emergency department.</li>
+                            <li style="margin-bottom: 12px;"><strong>Request Imaging:</strong> Discuss the necessity of a cranial MRI or CT scan with your doctor.</li>
+                            <li style="margin-bottom: 12px;"><strong>Do Not Drive:</strong> If you reported seizures or severe visual/motor impairment, avoid driving or operating heavy machinery.</li>
+                            <li><strong>Prepare Information:</strong> Keep a detailed log of when symptoms occur, their severity, and what you were doing at the time to share with the doctor.</li>
+                        {% elif risk_level == 'Moderate Risk' %}
+                            <li style="margin-bottom: 12px;"><strong>Schedule a Checkup:</strong> Book an appointment with your primary care physician to discuss these symptoms.</li>
+                            <li style="margin-bottom: 12px;"><strong>Keep a Symptom Diary:</strong> Note the time, duration, and severity of your symptoms to help your doctor identify patterns.</li>
+                            <li style="margin-bottom: 12px;"><strong>Monitor for Changes:</strong> If any symptoms worsen or new ones appear (like seizures or severe vomiting), seek immediate medical care.</li>
+                            <li><strong>Vision Assessment:</strong> If you reported vision changes, consider also seeing an optometrist or ophthalmologist.</li>
+                        {% else %}
+                            <li style="margin-bottom: 12px;"><strong>Routine Monitoring:</strong> Continue to observe your health. These symptoms are common and often benign.</li>
+                            <li style="margin-bottom: 12px;"><strong>General Wellness:</strong> Ensure you are getting adequate sleep, hydration, and managing stress levels.</li>
+                            <li><strong>Follow Up If Needed:</strong> If symptoms persist for more than a few weeks or begin to interfere with daily life, schedule a routine doctor's appointment.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 MEDICAL REGULATORY DISCLAIMER
+                 ================================================ -->
+            <div class="ns-disclaimer">
+                <div class="ns-disclaimer__icon" aria-hidden="true">⚕️</div>
+                <div>
+                    <strong>Medical Disclaimer:</strong> This symptom-based risk engine is an informational triage tool, not a diagnostic instrument. It cannot replace a professional medical consultation. Symptoms of brain tumors can be identical to those of many common, less severe conditions. Always consult a qualified healthcare provider for proper diagnosis and treatment.
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ====================================================
+         FOOTER
+         ==================================================== -->
+    <footer class="ns-footer">
+        <div class="ns-container">
+            <strong>NeuroScan AI</strong> &bull; AI-Assisted Brain MRI &amp; Medical Report Analysis &bull; Research Prototype
+        </div>
+    </footer>
+
+</body>
+</html>
