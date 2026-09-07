@@ -11,10 +11,33 @@ import pymupdf
 # TESSERACT CONFIGURATION
 # ============================================================
 
-TESSERACT_PATH = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+# Windows default
+TESSERACT_PATH_WIN = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-if os.path.exists(TESSERACT_PATH):
-    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+# macOS Homebrew default
+TESSERACT_PATH_MAC = "/opt/homebrew/bin/tesseract"
+
+# macOS Intel Homebrew
+TESSERACT_PATH_MAC_INTEL = "/usr/local/bin/tesseract"
+
+if os.path.exists(TESSERACT_PATH_WIN):
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH_WIN
+elif os.path.exists(TESSERACT_PATH_MAC):
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH_MAC
+elif os.path.exists(TESSERACT_PATH_MAC_INTEL):
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH_MAC_INTEL
+
+
+def _tesseract_available():
+    """Check if Tesseract OCR is available on this system."""
+    try:
+        pytesseract.get_tesseract_version()
+        return True
+    except Exception:
+        return False
+
+
+TESSERACT_INSTALLED = _tesseract_available()
 
 
 # ============================================================
@@ -602,6 +625,17 @@ def extract_report_text(file_path):
 
             return text
 
+        # PDF has little selectable text — needs OCR
+        if not TESSERACT_INSTALLED:
+            # Still return whatever text we got rather than crash
+            if text.strip():
+                return text
+            raise RuntimeError(
+                "This PDF appears to be scanned and requires "
+                "Tesseract OCR to extract text. "
+                "Install Tesseract: brew install tesseract"
+            )
+
         # Otherwise perform OCR
         return extract_text_from_scanned_pdf(
             file_path
@@ -622,6 +656,13 @@ def extract_report_text(file_path):
     }
 
     if extension in image_extensions:
+
+        if not TESSERACT_INSTALLED:
+            raise RuntimeError(
+                "Image-based reports require Tesseract OCR "
+                "to extract text. "
+                "Install Tesseract: brew install tesseract"
+            )
 
         return extract_text_from_image(
             file_path
