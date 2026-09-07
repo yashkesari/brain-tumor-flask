@@ -14,129 +14,86 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
     <style>
-        .ns-hero-section {
-            background-color: var(--surface-white);
-            padding: 80px 0 64px 0;
-            border-bottom: 1px solid var(--slate-200);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Subtle background pattern */
-        .ns-hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.03), transparent 50%),
-                        radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.03), transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .ns-hero-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 48px auto;
-        }
-
-        .ns-primary-form-wrapper {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Elevate the primary form */
-        #ns-mri-form {
-            box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.1);
-            border: 1px solid var(--primary-accent);
-            transform: translateY(0);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        #ns-mri-form:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.15);
-        }
-
-        .ns-addons-section {
-            padding: 80px 0;
+        body {
             background-color: var(--slate-50);
         }
 
-        .ns-addons-grid {
+        .ns-dashboard-main {
+            padding: 32px 0 48px 0;
+            min-height: calc(100vh - 64px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ns-dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1.2fr 1fr;
             gap: 24px;
-            margin-top: 48px;
+            align-items: stretch;
         }
 
         @media (max-width: 1024px) {
-            .ns-addons-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 768px) {
-            .ns-addons-grid {
+            .ns-dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .ns-addon-card {
-            display: flex;
-            flex-direction: column;
+        /* Reusable Card Styles */
+        .ns-dash-card {
             background: var(--surface-white);
             border: 1px solid var(--slate-200);
             border-radius: var(--radius-lg);
-            padding: 32px 24px;
-            text-align: center;
-            height: 100%;
-            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .ns-addon-card:hover {
+        /* Primary Core Card (MRI) */
+        .ns-dash-card--primary {
+            border: 2px solid var(--primary-accent);
+            box-shadow: 0 12px 24px -8px rgba(14, 165, 233, 0.15);
+            padding: 40px;
+        }
+
+        .ns-dash-card--primary:hover {
+            box-shadow: 0 16px 32px -8px rgba(14, 165, 233, 0.2);
+        }
+
+        /* Secondary Cards */
+        .ns-dash-card--secondary {
+            padding: 24px;
+        }
+
+        .ns-dash-card--secondary:hover {
             border-color: var(--slate-300);
-            box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.05);
+            box-shadow: 0 8px 16px -8px rgba(15, 23, 42, 0.05);
         }
 
-        .ns-addon-card__icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
+        .ns-addon-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px auto;
+            border-radius: 12px;
         }
+
+        /* Specific Colors */
+        .ns-color-report .ns-addon-icon { background: #e0f2fe; color: #0284c7; }
+        .ns-color-report .ns-btn { border-color: #bae6fd; color: #0284c7; width: 100%; justify-content: center; }
         
-        .ns-addon-card__title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--navy-900);
-            margin-bottom: 12px;
+        .ns-color-symptom .ns-addon-icon { background: #fff7ed; color: #ea580c; }
+        .ns-color-symptom .ns-btn { border-color: #fdba74; color: #ea580c; background: #fff7ed; width: 100%; justify-content: center; }
+        .ns-color-symptom .ns-btn:hover { background: #ffedd5; }
+
+        .ns-color-edu .ns-addon-icon { background: #e0e7ff; color: #4338ca; }
+        .ns-color-edu .ns-btn { border-color: #c7d2fe; color: #4338ca; background: #e0e7ff; width: 100%; justify-content: center; }
+        .ns-color-edu .ns-btn:hover { background: #c7d2fe; }
+
+        /* Compact Upload Zone Overrides */
+        .ns-compact-upload {
+            padding: 24px;
+            margin-bottom: 16px;
         }
-
-        .ns-addon-card__desc {
-            font-size: 0.9375rem;
-            color: var(--slate-600);
-            margin-bottom: 24px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        /* Specific Add-on colors */
-        .ns-addon--report .ns-addon-card__icon { background: #e0f2fe; color: #0284c7; }
-        .ns-addon--report .ns-btn { border-color: #bae6fd; color: #0284c7; width: 100%; justify-content: center; }
-        
-        .ns-addon--symptom .ns-addon-card__icon { background: #fff7ed; color: #ea580c; }
-        .ns-addon--symptom .ns-btn { border-color: #fdba74; color: #ea580c; background: #fff7ed; width: 100%; justify-content: center; }
-        .ns-addon--symptom .ns-btn:hover { background: #ffedd5; }
-
-        .ns-addon--edu .ns-addon-card__icon { background: #e0e7ff; color: #4338ca; }
-        .ns-addon--edu .ns-btn { border-color: #c7d2fe; color: #4338ca; background: #e0e7ff; width: 100%; justify-content: center; }
-        .ns-addon--edu .ns-btn:hover { background: #d1d5db; /* overridden below */ background: #c7d2fe; }
     </style>
 </head>
 
@@ -161,7 +118,7 @@
                         NeuroScan <span>AI</span>
                         <span class="ns-brand__badge">v2.4</span>
                     </div>
-                    <span class="ns-brand__tagline">Deep Learning MRI Diagnostic Platform</span>
+                    <span class="ns-brand__tagline">Diagnostic & Triage Dashboard</span>
                 </div>
             </a>
 
@@ -174,50 +131,55 @@
         </div>
     </header>
 
-    <main>
-        <!-- ====================================================
-             HERO / PRIMARY CORE: MRI CLASSIFICATION
-             ==================================================== -->
-        <section class="ns-hero-section">
-            <div class="ns-container">
-                
-                <div class="ns-hero-content">
-                    <div class="ns-badge-pill" style="margin-bottom: 24px; display: inline-flex;">
+    <main class="ns-dashboard-main">
+        <div class="ns-container">
+
+            <!-- ====================================================
+                 DASHBOARD HEADER
+                 ==================================================== -->
+            <div style="margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <div class="ns-badge-pill" style="margin-bottom: 12px; display: inline-flex;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                         </svg>
                         AI-Assisted Research Prototype
                     </div>
-                    
-                    <h1 class="ns-hero__title" style="font-size: 3rem; line-height: 1.1; margin-bottom: 20px;">
-                        Deep Learning <span>Brain MRI</span> Classification & Segmentation
+                    <h1 style="font-size: 2.25rem; font-weight: 700; color: var(--navy-900); margin-bottom: 8px; line-height: 1.2; letter-spacing: -0.02em;">
+                        Deep Learning <span style="color: var(--primary-accent);">Brain MRI Analysis</span>
                     </h1>
-                    
-                    <p class="ns-hero__subtitle" style="font-size: 1.125rem; max-width: 640px; margin: 0 auto; color: var(--slate-600);">
-                        Core diagnostic engine utilizing Convolutional Neural Networks for 4-class tumor classification and YOLOv11 for advanced instance segmentation.
+                    <p style="font-size: 1.0625rem; color: var(--slate-600); margin: 0; max-width: 700px;">
+                        Core classification & segmentation engine supported by NLP medical report extraction and clinical symptom triage.
                     </p>
                 </div>
+            </div>
 
-                <div class="ns-primary-form-wrapper">
-                    <!-- ============================================
-                         MODULE A: BRAIN MRI ANALYSIS
-                         ============================================ -->
-                    <form id="ns-mri-form" action="/predict" method="POST" enctype="multipart/form-data" class="ns-module-card">
+            <!-- ====================================================
+                 DASHBOARD GRID (All-in-one view)
+                 ==================================================== -->
+            <div class="ns-dashboard-grid">
+                
+                <!-- ----------------------------------------------------
+                     LEFT COLUMN: CORE MRI MODULE (The primary focus)
+                     ---------------------------------------------------- -->
+                <div style="display: flex; flex-direction: column;">
+                    <form id="ns-mri-form" action="/predict" method="POST" enctype="multipart/form-data" class="ns-dash-card ns-dash-card--primary" style="flex: 1;">
 
-                        <div class="ns-module-card__icon ns-module-card__icon--mri" aria-hidden="true" style="margin: 0 auto 16px auto;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
-                                <path d="M9 22h6"/>
-                            </svg>
+                        <div style="text-align: center; margin-bottom: 24px;">
+                            <div class="ns-addon-icon" aria-hidden="true" style="margin: 0 auto 16px auto; width: 64px; height: 64px; background: var(--primary-subtle); color: var(--primary-accent);">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
+                                    <path d="M9 22h6"/>
+                                </svg>
+                            </div>
+                            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--navy-900); margin-bottom: 8px;">MRI Classification & Segmentation</h2>
+                            <p style="font-size: 0.9375rem; color: var(--slate-600); max-width: 400px; margin: 0 auto;">
+                                Upload a cranial MRI image (JPG/PNG) or supported PDF to begin the dual-stage AI analysis pipeline.
+                            </p>
                         </div>
 
-                        <h2 class="ns-module-card__title" style="text-align: center;">Upload MRI Scan</h2>
-                        <p class="ns-module-card__subtitle" style="text-align: center; margin-bottom: 24px;">
-                            Select a cranial MRI image (JPG/PNG) or supported PDF to begin the dual-stage AI analysis pipeline.
-                        </p>
-
                         <!-- Upload Zone -->
-                        <div id="ns-mri-upload-zone" class="ns-module-upload-zone" role="button" tabindex="0" aria-label="Upload Brain MRI">
+                        <div id="ns-mri-upload-zone" class="ns-module-upload-zone" role="button" tabindex="0" aria-label="Upload Brain MRI" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; margin-bottom: 24px;">
                             <input
                                 id="mri-file-input"
                                 class="ns-module-upload-zone__input"
@@ -228,18 +190,18 @@
                                 aria-label="Select MRI Image File"
                             >
                             <div class="ns-module-upload-zone__icon" aria-hidden="true">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                                     <polyline points="17 8 12 3 7 8"/>
                                     <line x1="12" y1="3" x2="12" y2="15"/>
                                 </svg>
                             </div>
-                            <div class="ns-module-upload-zone__text">Drag &amp; Drop or Browse</div>
+                            <div class="ns-module-upload-zone__text" style="font-size: 1.125rem;">Drag &amp; Drop or Browse</div>
                             <div class="ns-module-upload-zone__hint">JPG / JPEG / PNG / PDF</div>
                         </div>
 
                         <!-- File Info -->
-                        <div id="ns-mri-file-info" class="ns-module-file-info">
+                        <div id="ns-mri-file-info" class="ns-module-file-info" style="margin-bottom: 24px;">
                             <span id="ns-mri-filename" class="ns-module-file-info__name"></span>
                             <span id="ns-mri-filesize" class="ns-module-file-info__size"></span>
                             <button id="ns-mri-remove" type="button" class="ns-module-file-info__remove" aria-label="Remove file">
@@ -255,7 +217,7 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button id="ns-mri-submit" type="submit" class="ns-btn ns-btn--primary" disabled style="width: 100%; justify-content: center; font-size: 1.0625rem; padding: 12px 24px;">
+                        <button id="ns-mri-submit" type="submit" class="ns-btn ns-btn--primary" disabled style="width: 100%; justify-content: center; font-size: 1.0625rem; padding: 14px 24px;">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
                                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                             </svg>
@@ -264,127 +226,111 @@
 
                     </form>
                 </div>
-                
-                <!-- Research Prototype Disclaimer -->
-                <div class="ns-disclaimer-banner" style="max-width: 600px; margin: 32px auto 0 auto; background: transparent; border: 1px solid var(--slate-200);">
-                    <div class="ns-disclaimer-banner__icon" aria-hidden="true">⚕️</div>
-                    <div style="font-size: 0.875rem;">
-                        <strong>Research Prototype:</strong> This is an academic prototype and is not a certified medical device. Results must be evaluated by a healthcare professional.
-                    </div>
-                </div>
 
-            </div>
-        </section>
-
-
-        <!-- ====================================================
-             SECONDARY MODULES: ADD-ONS
-             ==================================================== -->
-        <section class="ns-addons-section">
-            <div class="ns-container">
-                
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <h2 style="font-size: 1.875rem; font-weight: 700; color: var(--navy-900); margin-bottom: 12px;">Supplementary Modules</h2>
-                    <p style="font-size: 1.0625rem; color: var(--slate-500); max-width: 600px; margin: 0 auto;">
-                        Additional tools built around the core classification engine for comprehensive patient evaluation and education.
-                    </p>
-                </div>
-
-                <div class="ns-addons-grid">
+                <!-- ----------------------------------------------------
+                     RIGHT COLUMN: ADD-ONS (Report, Symptoms, Education)
+                     ---------------------------------------------------- -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
                     
-                    <!-- ADDON 1: REPORT ANALYSIS (FORM) -->
-                    <form id="ns-report-form" action="/analyze-report" method="POST" enctype="multipart/form-data" class="ns-addon-card ns-addon--report" style="margin: 0;">
-                        <div class="ns-addon-card__icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                                <polyline points="10 9 9 9 8 9"/>
-                            </svg>
-                        </div>
-                        <h3 class="ns-addon-card__title">Medical Report Analysis</h3>
-                        <p class="ns-addon-card__desc">
-                            Upload an existing text or scanned medical report for OCR extraction and NLP-driven structured analysis.
-                        </p>
-                        
-                        <!-- Upload Zone -->
-                        <div id="ns-report-upload-zone" class="ns-module-upload-zone" role="button" tabindex="0" aria-label="Upload Medical Report" style="padding: 16px; margin-bottom: 16px;">
-                            <input
-                                id="report-file-input"
-                                class="ns-module-upload-zone__input"
-                                type="file"
-                                name="report"
-                                accept=".pdf,.jpg,.jpeg,.png"
-                                required
-                                aria-label="Select Report File"
-                            >
-                            <div class="ns-module-upload-zone__icon" aria-hidden="true" style="margin-bottom: 8px;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                    <polyline points="17 8 12 3 7 8"/>
-                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                    <!-- ADDON 1: REPORT ANALYSIS (Horizontal Layout) -->
+                    <form id="ns-report-form" action="/analyze-report" method="POST" enctype="multipart/form-data" class="ns-dash-card ns-dash-card--secondary ns-color-report" style="flex: 1; justify-content: center;">
+                        <div style="display: flex; align-items: flex-start; gap: 16px;">
+                            <div class="ns-addon-icon" aria-hidden="true" style="flex-shrink: 0; width: 48px; height: 48px;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                    <polyline points="10 9 9 9 8 9"/>
                                 </svg>
                             </div>
-                            <div class="ns-module-upload-zone__text" style="font-size: 0.875rem;">Browse File</div>
-                        </div>
+                            <div style="flex: 1;">
+                                <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--navy-900); margin-bottom: 4px;">Medical Report Analysis</h3>
+                                <p style="font-size: 0.875rem; color: var(--slate-600); margin-bottom: 16px;">OCR &amp; NLP extraction from clinical documents.</p>
+                                
+                                <!-- Upload Zone -->
+                                <div id="ns-report-upload-zone" class="ns-module-upload-zone ns-compact-upload" role="button" tabindex="0" aria-label="Upload Medical Report">
+                                    <input
+                                        id="report-file-input"
+                                        class="ns-module-upload-zone__input"
+                                        type="file"
+                                        name="report"
+                                        accept=".pdf,.jpg,.jpeg,.png"
+                                        required
+                                        aria-label="Select Report File"
+                                    >
+                                    <div class="ns-module-upload-zone__icon" aria-hidden="true" style="margin-bottom: 8px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <polyline points="17 8 12 3 7 8"/>
+                                            <line x1="12" y1="3" x2="12" y2="15"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ns-module-upload-zone__text" style="font-size: 0.875rem;">Select Document</div>
+                                </div>
 
-                        <!-- File Info -->
-                        <div id="ns-report-file-info" class="ns-module-file-info" style="margin-bottom: 16px;">
-                            <span id="ns-report-filename" class="ns-module-file-info__name"></span>
-                            <span id="ns-report-filesize" class="ns-module-file-info__size"></span>
-                            <button id="ns-report-remove" type="button" class="ns-module-file-info__remove" aria-label="Remove file">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                                </svg>
-                            </button>
-                        </div>
+                                <!-- File Info -->
+                                <div id="ns-report-file-info" class="ns-module-file-info" style="margin-bottom: 16px;">
+                                    <span id="ns-report-filename" class="ns-module-file-info__name"></span>
+                                    <span id="ns-report-filesize" class="ns-module-file-info__size"></span>
+                                    <button id="ns-report-remove" type="button" class="ns-module-file-info__remove" aria-label="Remove file">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                        </svg>
+                                    </button>
+                                </div>
 
-                        <button id="ns-report-submit" type="submit" class="ns-btn ns-btn--secondary" disabled>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            </svg>
-                            Analyze Report
-                        </button>
+                                <button id="ns-report-submit" type="submit" class="ns-btn ns-btn--secondary" disabled>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    </svg>
+                                    Analyze Report
+                                </button>
+                            </div>
+                        </div>
                     </form>
 
-                    <!-- ADDON 2: SYMPTOM RISK ENGINE -->
-                    <div class="ns-addon-card ns-addon--symptom">
-                        <div class="ns-addon-card__icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                            </svg>
+                    <!-- ADDON ROW 2: SYMPTOMS & EDUCATION -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        
+                        <!-- ADDON 2: SYMPTOM RISK ENGINE -->
+                        <div class="ns-dash-card ns-dash-card--secondary ns-color-symptom" style="justify-content: space-between;">
+                            <div style="text-align: center;">
+                                <div class="ns-addon-icon" aria-hidden="true" style="margin: 0 auto 12px auto; width: 48px; height: 48px;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                    </svg>
+                                </div>
+                                <h3 style="font-size: 1.0625rem; font-weight: 700; color: var(--navy-900); margin-bottom: 4px;">Symptom Engine</h3>
+                                <p style="font-size: 0.8125rem; color: var(--slate-600); margin-bottom: 20px;">Interactive clinical triage based on patient history.</p>
+                            </div>
+                            <a href="/symptoms" class="ns-btn ns-btn--secondary">
+                                Start Assessment
+                            </a>
                         </div>
-                        <h3 class="ns-addon-card__title">Symptom Risk Engine</h3>
-                        <p class="ns-addon-card__desc">
-                            An interactive clinical triage tool. Answer questions about your symptoms to calculate risk level and get follow-up recommendations.
-                        </p>
-                        <a href="/symptoms" class="ns-btn ns-btn--secondary">
-                            Analyze Symptoms
-                        </a>
-                    </div>
 
-                    <!-- ADDON 3: EDUCATION HUB -->
-                    <div class="ns-addon-card ns-addon--edu">
-                        <div class="ns-addon-card__icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                            </svg>
+                        <!-- ADDON 3: EDUCATION HUB -->
+                        <div class="ns-dash-card ns-dash-card--secondary ns-color-edu" style="justify-content: space-between;">
+                            <div style="text-align: center;">
+                                <div class="ns-addon-icon" aria-hidden="true" style="margin: 0 auto 12px auto; width: 48px; height: 48px;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                    </svg>
+                                </div>
+                                <h3 style="font-size: 1.0625rem; font-weight: 700; color: var(--navy-900); margin-bottom: 4px;">Education Hub</h3>
+                                <p style="font-size: 0.8125rem; color: var(--slate-600); margin-bottom: 20px;">Patient awareness &amp; disease subtype information.</p>
+                            </div>
+                            <a href="/education" class="ns-btn ns-btn--secondary">
+                                Explore Hub
+                            </a>
                         </div>
-                        <h3 class="ns-addon-card__title">Education Hub</h3>
-                        <p class="ns-addon-card__desc">
-                            Patient awareness module detailing brain tumor subtypes, precautions, common symptoms, and treatment overviews.
-                        </p>
-                        <a href="/education" class="ns-btn ns-btn--secondary" style="background: transparent;">
-                            Explore Hub
-                        </a>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
-        </section>
 
+            </div>
+        </div>
     </main>
 
     <!-- ====================================================
@@ -397,15 +343,6 @@
             <div class="ns-loading-hud__subtext">This process may take 5-15 seconds.</div>
         </div>
     </div>
-
-    <!-- ====================================================
-         FOOTER
-         ==================================================== -->
-    <footer class="ns-footer">
-        <div class="ns-container">
-            <strong>NeuroScan AI</strong> &bull; Deep Learning Neurological Diagnostic Platform &bull; Academic &amp; Research Prototype
-        </div>
-    </footer>
 
     <!-- Client Script -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
