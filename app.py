@@ -230,6 +230,259 @@ def education():
 
 
 # ============================================================
+# EDUCATION — TUMOR TYPE DETAIL
+# ============================================================
+
+TUMOR_EDUCATION = {
+
+    "glioma": {
+        "name": "Glioma",
+        "tagline": "Understanding Your Glioma Diagnosis",
+        "color_class": "glioma",
+        "who_grade": "WHO Grade I–IV",
+        "overview": (
+            "Gliomas are tumors that arise from glial cells — the supportive cells of the nervous system. "
+            "They are the most common type of primary brain tumor, accounting for about 33% of all brain tumors. "
+            "Gliomas range from slow-growing, low-grade tumors (Grade I–II) to highly aggressive, "
+            "fast-growing tumors like Glioblastoma Multiforme (Grade IV)."
+        ),
+        "subtypes": [
+            {"name": "Astrocytoma", "desc": "Arises from astrocytes. Can be low-grade (Grade I–II) or high-grade (Grade III–IV)."},
+            {"name": "Oligodendroglioma", "desc": "Develops from oligodendrocytes. Often responds well to chemotherapy."},
+            {"name": "Glioblastoma (GBM)", "desc": "The most aggressive form (Grade IV). Most common malignant brain tumor in adults."},
+            {"name": "Ependymoma", "desc": "Arises from ependymal cells lining the ventricles. More common in children."},
+        ],
+        "symptoms": [
+            {"name": "Persistent Headaches", "detail": "Often worse in the morning or after lying down. May be different from usual headaches."},
+            {"name": "Seizures", "detail": "New-onset seizures are a common first symptom, especially in low-grade gliomas."},
+            {"name": "Cognitive Changes", "detail": "Memory loss, confusion, difficulty concentrating, personality changes."},
+            {"name": "Weakness or Numbness", "detail": "Often on one side of the body, depending on tumor location."},
+            {"name": "Speech Difficulties", "detail": "Trouble speaking, understanding, or finding words (if tumor is in language areas)."},
+            {"name": "Vision Problems", "detail": "Blurred vision, double vision, or visual field loss."},
+            {"name": "Nausea & Vomiting", "detail": "Caused by increased intracranial pressure from the growing tumor."},
+            {"name": "Balance Problems", "detail": "Difficulty walking, dizziness, or loss of coordination."},
+        ],
+        "precautions": [
+            "Attend all scheduled follow-up MRI scans — early detection of changes is critical",
+            "Take prescribed anti-seizure medications exactly as directed, even if seizure-free",
+            "Keep a symptom diary to track any new or worsening symptoms between appointments",
+            "Avoid activities that could cause head injury (contact sports, extreme sports)",
+            "Inform your medical team immediately if you experience new seizures, sudden headaches, or neurological changes",
+            "Carry a medical ID card or bracelet noting your condition and medications",
+        ],
+        "dos": [
+            "Follow your neurosurgeon's and oncologist's treatment plan consistently",
+            "Maintain a balanced diet rich in antioxidants (fruits, vegetables, whole grains)",
+            "Stay physically active within your doctor's guidelines — gentle exercise can improve mood and energy",
+            "Get adequate sleep (7–9 hours) — the brain heals during rest",
+            "Seek support from brain tumor support groups and counseling services",
+            "Ask your medical team about clinical trials — new treatments are constantly being developed",
+            "Practice stress-reduction techniques (meditation, deep breathing, yoga)",
+            "Stay hydrated and maintain a healthy weight",
+        ],
+        "donts": [
+            "Do NOT skip medications or adjust doses without consulting your doctor",
+            "Do NOT ignore new or worsening symptoms — report them immediately",
+            "Do NOT consume alcohol excessively — it can interact with medications and affect brain function",
+            "Do NOT drive if you are experiencing seizures (follow local driving regulations)",
+            "Do NOT rely solely on alternative/complementary treatments — use them alongside conventional medicine",
+            "Do NOT isolate yourself — maintain social connections for mental health",
+            "Do NOT make major decisions while on high-dose steroids (they can affect judgment and mood)",
+        ],
+        "treatment_overview": (
+            "Treatment depends on the tumor's grade, size, location, and molecular markers. "
+            "Options include surgery (maximum safe resection), radiation therapy, and chemotherapy "
+            "(Temozolomide is standard for high-grade gliomas). Emerging treatments include "
+            "tumor treating fields (TTFields), immunotherapy, and targeted molecular therapies."
+        ),
+    },
+
+    "meningioma": {
+        "name": "Meningioma",
+        "tagline": "Understanding Your Meningioma Diagnosis",
+        "color_class": "meningioma",
+        "who_grade": "WHO Grade I–III (mostly Grade I)",
+        "overview": (
+            "Meningiomas develop from the meninges — the protective membranes surrounding the brain and spinal cord. "
+            "They are the most common benign brain tumor, representing about 37% of all primary brain tumors. "
+            "The vast majority (~80%) are Grade I (benign) and grow slowly over years. "
+            "They are more common in women and typically diagnosed between ages 40–70."
+        ),
+        "subtypes": [
+            {"name": "Grade I (Benign)", "desc": "Slow-growing, well-defined borders. Most common type (~80%). Often curable with surgery."},
+            {"name": "Grade II (Atypical)", "desc": "Faster growth, higher recurrence rate. Accounts for ~15–20% of meningiomas."},
+            {"name": "Grade III (Malignant)", "desc": "Rare (~2%), aggressive, can invade brain tissue. Requires aggressive treatment."},
+        ],
+        "symptoms": [
+            {"name": "Gradual Headaches", "detail": "Slowly worsening headaches over months or years as the tumor grows."},
+            {"name": "Vision Changes", "detail": "Blurred or double vision, especially if the tumor is near the optic nerves."},
+            {"name": "Hearing Loss", "detail": "Ringing in ears or hearing loss if tumor is near the auditory structures."},
+            {"name": "Memory Difficulties", "detail": "Subtle cognitive changes that may develop gradually."},
+            {"name": "Weakness in Limbs", "detail": "Progressive weakness, usually on one side, if tumor compresses motor areas."},
+            {"name": "Seizures", "detail": "Can occur when the tumor irritates the brain surface."},
+            {"name": "Loss of Smell", "detail": "If the meningioma is located near the olfactory groove."},
+        ],
+        "precautions": [
+            "Follow up with regular MRI scans as recommended by your neurosurgeon",
+            "Small, asymptomatic meningiomas may only need monitoring ('watch and wait')",
+            "Report any new or progressive neurological symptoms promptly",
+            "Discuss hormone therapy and birth control with your doctor (some meningiomas have hormone receptors)",
+            "Protect your head from injury — wear helmets during cycling or similar activities",
+        ],
+        "dos": [
+            "Attend all scheduled imaging and follow-up appointments consistently",
+            "Maintain a healthy lifestyle with regular exercise and balanced nutrition",
+            "Discuss surgical options thoroughly with your neurosurgeon — most Grade I tumors are curable",
+            "Seek a second opinion if unsure about the treatment plan",
+            "Join meningioma-specific support communities for shared experiences",
+            "Practice mindfulness and relaxation techniques to manage anxiety",
+            "Stay informed about your condition but use reputable medical sources",
+        ],
+        "donts": [
+            "Do NOT panic — most meningiomas are benign and treatable",
+            "Do NOT skip follow-up MRI scans, even if you feel fine",
+            "Do NOT take hormone supplements or birth control pills without discussing with your neuro-oncologist",
+            "Do NOT ignore gradually worsening symptoms — 'slow' doesn't mean 'not important'",
+            "Do NOT self-diagnose using the internet — always consult qualified professionals",
+            "Do NOT delay seeking medical attention if you develop sudden severe headache or seizures",
+        ],
+        "treatment_overview": (
+            "Many meningiomas can be cured with complete surgical removal. Small, asymptomatic tumors "
+            "may be monitored with regular MRI scans. Stereotactic radiosurgery (Gamma Knife) is an option "
+            "for small tumors or surgical remnants. Atypical and malignant meningiomas may require "
+            "radiation therapy after surgery. Recurrence is possible, making long-term follow-up essential."
+        ),
+    },
+
+    "pituitary": {
+        "name": "Pituitary Tumor",
+        "tagline": "Understanding Your Pituitary Tumor Diagnosis",
+        "color_class": "pituitary",
+        "who_grade": "Usually benign (adenoma)",
+        "overview": (
+            "Pituitary tumors develop in the pituitary gland — a pea-sized gland at the base of the brain "
+            "that controls many important hormones. Pituitary adenomas account for about 16% of primary brain tumors. "
+            "The vast majority are benign and treatable. They are classified by size "
+            "(microadenoma <10mm, macroadenoma ≥10mm) and whether they produce excess hormones."
+        ),
+        "subtypes": [
+            {"name": "Prolactinoma", "desc": "Most common type. Produces excess prolactin. Often treated with medication alone."},
+            {"name": "Growth Hormone Adenoma", "desc": "Causes acromegaly in adults or gigantism in children."},
+            {"name": "ACTH-producing Adenoma", "desc": "Causes Cushing's disease (excess cortisol production)."},
+            {"name": "Non-functioning Adenoma", "desc": "Does not produce hormones but can cause symptoms by pressing on nearby structures."},
+            {"name": "TSH-producing Adenoma", "desc": "Rare. Causes hyperthyroidism by producing excess TSH."},
+        ],
+        "symptoms": [
+            {"name": "Vision Changes", "detail": "Loss of peripheral vision (bitemporal hemianopia) from pressure on the optic chiasm."},
+            {"name": "Persistent Headaches", "detail": "Caused by the expanding tumor pressing on surrounding structures."},
+            {"name": "Hormonal Imbalances", "detail": "Irregular periods, infertility, unexpected lactation, weight changes, fatigue."},
+            {"name": "Fatigue & Weakness", "detail": "Low energy levels, often caused by hormonal deficiencies."},
+            {"name": "Mood Changes", "detail": "Depression, anxiety, or irritability related to hormonal imbalances."},
+            {"name": "Sexual Dysfunction", "detail": "Low libido, erectile dysfunction, or menstrual irregularities."},
+        ],
+        "precautions": [
+            "Have complete hormonal blood tests before and after treatment",
+            "Monitor vision regularly with an ophthalmologist (visual field testing)",
+            "Take hormone replacement medications exactly as prescribed if your pituitary function is affected",
+            "Carry a steroid emergency card if you are on cortisol replacement (adrenal insufficiency risk)",
+            "Inform all your doctors (dentist, surgeon) about your pituitary condition before any procedure",
+            "Women: discuss fertility plans with your endocrinologist before treatment",
+        ],
+        "dos": [
+            "Work closely with an endocrinologist for ongoing hormone management",
+            "Take hormone replacement medications at the same time every day",
+            "Get regular eye exams to monitor vision, especially peripheral vision",
+            "Learn about your specific tumor type and its hormonal effects",
+            "Maintain consistent meal schedules if you have cortisol-related issues",
+            "Wear a medical alert bracelet if you have adrenal insufficiency",
+            "Stay physically active — exercise helps manage weight and mood changes from hormonal shifts",
+            "Keep all follow-up endocrinology and imaging appointments",
+        ],
+        "donts": [
+            "Do NOT stop hormone medications suddenly — this can cause life-threatening adrenal crisis",
+            "Do NOT ignore changes in vision, even subtle ones — report them immediately",
+            "Do NOT skip blood tests — hormonal monitoring is essential for safe treatment",
+            "Do NOT assume all symptoms are from the tumor — some may be medication side effects",
+            "Do NOT delay seeking emergency care if you experience sudden severe headache with vision loss (pituitary apoplexy)",
+            "Do NOT take over-the-counter supplements without consulting your endocrinologist",
+        ],
+        "treatment_overview": (
+            "Treatment depends on the tumor type. Prolactinomas often respond to medication alone "
+            "(cabergoline or bromocriptine). Other types may require transsphenoidal surgery (through the nose). "
+            "Radiation therapy is reserved for residual or recurrent tumors. Hormone replacement therapy "
+            "may be needed lifelong if pituitary function is compromised."
+        ),
+    },
+
+    "no_tumor": {
+        "name": "No Tumor Detected",
+        "tagline": "Understanding Your Normal Brain MRI Result",
+        "color_class": "notumor",
+        "who_grade": "No abnormality detected by AI",
+        "overview": (
+            "The AI classifier did not detect patterns consistent with glioma, meningioma, or pituitary tumors "
+            "in your MRI scan. This is a positive finding, but it is important to understand that this AI system "
+            "only screens for three specific tumor types. Other neurological conditions, smaller lesions, "
+            "or rare tumor types may not be detected by this model."
+        ),
+        "subtypes": [],
+        "symptoms": [
+            {"name": "If You Still Have Symptoms", "detail": "A 'no tumor' AI result does NOT rule out all conditions. Consult your neurologist for thorough evaluation."},
+            {"name": "Persistent Headaches", "detail": "Chronic headaches have many causes (migraine, tension, cluster). A specialist can help identify the cause."},
+            {"name": "Other Neurological Symptoms", "detail": "Dizziness, tingling, weakness can indicate various conditions beyond tumors."},
+        ],
+        "precautions": [
+            "This AI result is preliminary — always confirm with a qualified radiologist and neurologist",
+            "The system only detects glioma, meningioma, and pituitary tumors — other conditions may exist",
+            "Continue investigating symptoms with your healthcare provider even with a 'no tumor' AI result",
+            "Follow up with your doctor if symptoms persist or worsen",
+        ],
+        "dos": [
+            "Share this result with your neurologist for professional interpretation",
+            "Continue routine health checkups as recommended by your doctor",
+            "Maintain a brain-healthy lifestyle: regular exercise, balanced diet, adequate sleep",
+            "Manage stress through relaxation, social activities, and hobbies",
+            "Protect your brain: wear helmets, avoid excessive alcohol, don't smoke",
+            "Stay mentally active with puzzles, reading, learning new skills",
+            "Keep a log of any symptoms for your doctor's reference",
+        ],
+        "donts": [
+            "Do NOT interpret this AI result as a definitive medical diagnosis",
+            "Do NOT stop seeking medical attention for persistent symptoms based on this result alone",
+            "Do NOT assume 'no tumor detected' means 'no health issue' — many conditions look normal on MRI",
+            "Do NOT share this result as a medical clearance — it is an AI-assisted screening tool only",
+        ],
+        "treatment_overview": (
+            "If the AI analysis shows no tumor, no specific tumor treatment is needed. However, "
+            "if you are experiencing symptoms, your doctor may recommend additional imaging (contrast-enhanced MRI, "
+            "CT scan), blood tests, neurological examination, or referral to a specialist. "
+            "Regular health monitoring and a brain-healthy lifestyle are always recommended."
+        ),
+    },
+}
+
+
+@app.route("/education/<tumor_type>")
+def education_detail(tumor_type):
+
+    # Normalize the tumor type
+    tumor_key = tumor_type.lower().replace("-", "_").strip()
+
+    data = TUMOR_EDUCATION.get(tumor_key)
+
+    if data is None:
+        return render_template(
+            "education.html"
+        )
+
+    return render_template(
+        "education_detail.html",
+        tumor=data,
+        tumor_type=tumor_key
+    )
+
+
+# ============================================================
 # YOLO SEGMENTATION (existing — unchanged)
 # ============================================================
 
