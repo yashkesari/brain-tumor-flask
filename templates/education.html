@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI — Education Hub</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ====================================================
+         APP NAVBAR
+         ==================================================== -->
+    <header class="ns-navbar">
+        <div class="ns-navbar__container">
+            <a href="/" class="ns-brand">
+                <div class="ns-brand__logo-wrap" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a7 7 0 0 0-7 7c0 3 1.5 5.5 4 7v3h6v-3c2.5-1.5 4-4 4-7a7 7 0 0 0-7-7z"/>
+                        <path d="M9 22h6"/>
+                        <path d="M12 2v6"/>
+                        <path d="M8 8h8"/>
+                    </svg>
+                </div>
+                <div class="ns-brand__text">
+                    <div class="ns-brand__name">
+                        NeuroScan <span>AI</span>
+                        <span class="ns-brand__badge">EDU</span>
+                    </div>
+                    <span class="ns-brand__tagline">Brain Tumor Awareness &amp; Patient Education</span>
+                </div>
+            </a>
+
+            <div class="ns-navbar__meta">
+                <a href="/" class="ns-btn ns-btn--secondary ns-btn--sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Analysis
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================
+         MAIN CONTENT
+         ==================================================== -->
+    <main class="ns-main">
+        <div class="ns-container">
+
+            <!-- Page Header -->
+            <div class="ns-report-header" style="margin-bottom: 32px;">
+                <div class="ns-badge-pill" style="margin-bottom: 12px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    Education Hub
+                </div>
+                <h1 class="ns-report-header__title">Brain Tumor Awareness &amp; Education</h1>
+                <p class="ns-report-header__subtitle">
+                    Learn about brain tumor types, symptoms, diagnostic methods, and treatment approaches. This information is compiled from publicly available medical literature for educational purposes.
+                </p>
+            </div>
+
+            <!-- ================================================
+                 WHAT ARE BRAIN TUMORS?
+                 ================================================ -->
+            <div class="ns-card ns-edu-card">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--blue" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 16v-4M12 8h.01"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">What Are Brain Tumors?</h2>
+                            <p class="ns-card__subtitle">Overview and classification</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ns-edu-content">
+                    <p>
+                        A brain tumor is an abnormal growth of cells within the brain or the central spinal canal. Brain tumors can be <strong>primary</strong> (originating in the brain) or <strong>secondary/metastatic</strong> (spreading from other parts of the body).
+                    </p>
+                    <p>
+                        Primary brain tumors are classified as either <strong>benign</strong> (non-cancerous, slower-growing) or <strong>malignant</strong> (cancerous, faster-growing). The World Health Organization (WHO) grades brain tumors from <strong>Grade I</strong> (least aggressive) to <strong>Grade IV</strong> (most aggressive).
+                    </p>
+                    <div class="ns-edu-stat-grid">
+                        <div class="ns-edu-stat">
+                            <div class="ns-edu-stat__number">120+</div>
+                            <div class="ns-edu-stat__label">Types of brain tumors identified by the WHO</div>
+                        </div>
+                        <div class="ns-edu-stat">
+                            <div class="ns-edu-stat__number">~30%</div>
+                            <div class="ns-edu-stat__label">Of brain tumors are malignant (cancerous)</div>
+                        </div>
+                        <div class="ns-edu-stat">
+                            <div class="ns-edu-stat__number">~700K</div>
+                            <div class="ns-edu-stat__label">People living with a brain tumor in the US alone</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 TUMOR TYPES (matches our classifier)
+                 ================================================ -->
+            <div class="ns-card ns-edu-card">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--teal" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="8" y1="6" x2="21" y2="6"/>
+                                <line x1="8" y1="12" x2="21" y2="12"/>
+                                <line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                <line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Common Brain Tumor Types</h2>
+                            <p class="ns-card__subtitle">The types detected by NeuroScan AI's classifier</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ns-edu-content">
+                    <div class="ns-edu-tumor-grid">
+
+                        <!-- Glioma -->
+                        <div class="ns-edu-tumor-card ns-edu-tumor-card--glioma">
+                            <div class="ns-edu-tumor-card__header">
+                                <span class="ns-edu-tumor-card__dot" style="background: var(--glioma-color);"></span>
+                                <h3 class="ns-edu-tumor-card__title">Glioma</h3>
+                            </div>
+                            <div class="ns-edu-tumor-card__grade">WHO Grade I–IV</div>
+                            <p class="ns-edu-tumor-card__desc">
+                                Gliomas arise from <strong>glial cells</strong> — the supportive cells of the nervous system. They are the most common type of primary brain tumor, accounting for about 33% of all brain tumors.
+                            </p>
+                            <div class="ns-edu-tumor-card__details">
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Subtypes</span>
+                                    <span>Astrocytoma, Oligodendroglioma, Glioblastoma (GBM)</span>
+                                </div>
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Glioblastoma</span>
+                                    <span>Most aggressive form (Grade IV). Median survival 14–16 months with treatment.</span>
+                                </div>
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Common location</span>
+                                    <span>Cerebral hemispheres, often frontal and temporal lobes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meningioma -->
+                        <div class="ns-edu-tumor-card ns-edu-tumor-card--meningioma">
+                            <div class="ns-edu-tumor-card__header">
+                                <span class="ns-edu-tumor-card__dot" style="background: var(--meningioma-color);"></span>
+                                <h3 class="ns-edu-tumor-card__title">Meningioma</h3>
+                            </div>
+                            <div class="ns-edu-tumor-card__grade">WHO Grade I–III (mostly Grade I)</div>
+                            <p class="ns-edu-tumor-card__desc">
+                                Meningiomas develop from the <strong>meninges</strong> — the protective membranes surrounding the brain and spinal cord. They are the most common <em>benign</em> brain tumor, representing about 37% of all primary brain tumors.
+                            </p>
+                            <div class="ns-edu-tumor-card__details">
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Behavior</span>
+                                    <span>Most are slow-growing and benign. About 2% are malignant.</span>
+                                </div>
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Treatment</span>
+                                    <span>Often curable with surgical removal. Some small ones are monitored.</span>
+                                </div>
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Common location</span>
+                                    <span>Along the surface of the brain (convexity, parasagittal, skull base)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pituitary -->
+                        <div class="ns-edu-tumor-card ns-edu-tumor-card--pituitary">
+                            <div class="ns-edu-tumor-card__header">
+                                <span class="ns-edu-tumor-card__dot" style="background: var(--pituitary-color);"></span>
+                                <h3 class="ns-edu-tumor-card__title">Pituitary Tumor</h3>
+                            </div>
+                            <div class="ns-edu-tumor-card__grade">Usually benign (adenoma)</div>
+                            <p class="ns-edu-tumor-card__desc">
+                                Pituitary tumors develop in the <strong>pituitary gland</strong> at the base of the brain. This pea-sized gland controls many hormones. Pituitary adenomas account for about 16% of primary brain tumors.
+                            </p>
+                            <div class="ns-edu-tumor-card__details">
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Types</span>
+                                    <span>Functioning (hormone-producing) and non-functioning</span>
+                                </div>
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Symptoms</span>
+                                    <span>Vision changes, hormonal imbalances, headaches</span>
+                                </div>
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Prognosis</span>
+                                    <span>Generally excellent. Most are treatable with surgery or medication.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- No Tumor -->
+                        <div class="ns-edu-tumor-card ns-edu-tumor-card--healthy">
+                            <div class="ns-edu-tumor-card__header">
+                                <span class="ns-edu-tumor-card__dot" style="background: var(--healthy-color);"></span>
+                                <h3 class="ns-edu-tumor-card__title">Normal Brain Tissue</h3>
+                            </div>
+                            <div class="ns-edu-tumor-card__grade">No tumor detected</div>
+                            <p class="ns-edu-tumor-card__desc">
+                                When an MRI scan shows <strong>normal brain tissue</strong> without any detectable tumors or abnormalities. A "no tumor" classification does not rule out all neurological conditions — it indicates the AI model did not detect patterns consistent with the three tumor types it was trained on.
+                            </p>
+                            <div class="ns-edu-tumor-card__details">
+                                <div class="ns-edu-detail-item">
+                                    <span class="ns-edu-detail-item__label">Important</span>
+                                    <span>This AI system only detects glioma, meningioma, and pituitary tumors. Other conditions may not be identified.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 WARNING SIGNS & SYMPTOMS
+                 ================================================ -->
+            <div class="ns-card ns-edu-card">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--amber" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Warning Signs &amp; Symptoms</h2>
+                            <p class="ns-card__subtitle">When to seek medical attention</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ns-edu-content">
+                    <p>
+                        Brain tumor symptoms depend on the tumor's <strong>size, location, and growth rate</strong>. Some tumors may not cause symptoms until they become large. If you experience any combination of the following symptoms persistently, consult a healthcare professional.
+                    </p>
+
+                    <div class="ns-edu-symptom-grid">
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">🤕</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Persistent Headaches</div>
+                                <div class="ns-edu-symptom__desc">New or worsening headaches, especially in the morning or with changes in position</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">⚡</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Seizures</div>
+                                <div class="ns-edu-symptom__desc">New-onset seizures in someone without a seizure history</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">👁️</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Vision Changes</div>
+                                <div class="ns-edu-symptom__desc">Blurred or double vision, loss of peripheral vision</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">💪</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Weakness or Numbness</div>
+                                <div class="ns-edu-symptom__desc">Progressive weakness or numbness in arms or legs, especially on one side</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">🗣️</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Speech Difficulties</div>
+                                <div class="ns-edu-symptom__desc">Difficulty speaking, understanding language, or finding words</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">🧠</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Cognitive Changes</div>
+                                <div class="ns-edu-symptom__desc">Memory problems, confusion, personality changes, difficulty concentrating</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">🤢</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Nausea &amp; Vomiting</div>
+                                <div class="ns-edu-symptom__desc">Unexplained nausea, especially in the morning, may indicate increased intracranial pressure</div>
+                            </div>
+                        </div>
+                        <div class="ns-edu-symptom">
+                            <div class="ns-edu-symptom__icon">⚖️</div>
+                            <div>
+                                <div class="ns-edu-symptom__name">Balance Problems</div>
+                                <div class="ns-edu-symptom__desc">Difficulty walking, dizziness, loss of coordination</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 DIAGNOSIS & IMAGING
+                 ================================================ -->
+            <div class="ns-card ns-edu-card">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--emerald" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Diagnosis &amp; Imaging</h2>
+                            <p class="ns-card__subtitle">How brain tumors are detected</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ns-edu-content">
+                    <div class="ns-edu-method-grid">
+                        <div class="ns-edu-method">
+                            <h4 class="ns-edu-method__title">🔬 MRI (Magnetic Resonance Imaging)</h4>
+                            <p class="ns-edu-method__desc">
+                                The <strong>gold standard</strong> for brain tumor detection. Uses magnetic fields and radio waves to create detailed images of brain structures. MRI can show tumor size, location, and sometimes composition. Contrast-enhanced MRI (with gadolinium) helps distinguish tumor tissue from normal tissue.
+                            </p>
+                        </div>
+                        <div class="ns-edu-method">
+                            <h4 class="ns-edu-method__title">🖥️ CT Scan</h4>
+                            <p class="ns-edu-method__desc">
+                                Uses X-rays to create cross-sectional images. Often the first imaging test performed in emergency settings. Faster than MRI but provides less detail for soft tissue. Useful for detecting calcifications and acute bleeding.
+                            </p>
+                        </div>
+                        <div class="ns-edu-method">
+                            <h4 class="ns-edu-method__title">🧬 Biopsy</h4>
+                            <p class="ns-edu-method__desc">
+                                A tissue sample is taken from the tumor for microscopic analysis. This is the <strong>definitive diagnostic method</strong> that confirms tumor type, grade, and molecular markers. Can be done during surgery or with a stereotactic needle biopsy.
+                            </p>
+                        </div>
+                        <div class="ns-edu-method">
+                            <h4 class="ns-edu-method__title">🤖 AI-Assisted Analysis</h4>
+                            <p class="ns-edu-method__desc">
+                                Emerging tools like NeuroScan AI use deep learning to assist in preliminary MRI analysis. These AI systems can identify patterns consistent with specific tumor types, but they are <strong>decision-support tools</strong> — not replacements for expert diagnosis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 TREATMENT APPROACHES
+                 ================================================ -->
+            <div class="ns-card ns-edu-card">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--blue" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Treatment Approaches</h2>
+                            <p class="ns-card__subtitle">Common treatment strategies</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ns-edu-content">
+                    <p style="margin-bottom: 20px;">
+                        Treatment depends on tumor type, size, location, grade, and the patient's overall health. A multidisciplinary team typically develops the treatment plan.
+                    </p>
+
+                    <div class="ns-edu-treatment-grid">
+                        <div class="ns-edu-treatment">
+                            <div class="ns-edu-treatment__icon">🏥</div>
+                            <h4 class="ns-edu-treatment__title">Surgery</h4>
+                            <p class="ns-edu-treatment__desc">
+                                The primary treatment when the tumor is accessible. Aims for maximum safe resection — removing as much tumor as possible while preserving brain function. Advanced techniques include awake craniotomy and image-guided surgery.
+                            </p>
+                        </div>
+                        <div class="ns-edu-treatment">
+                            <div class="ns-edu-treatment__icon">☢️</div>
+                            <h4 class="ns-edu-treatment__title">Radiation Therapy</h4>
+                            <p class="ns-edu-treatment__desc">
+                                Uses targeted high-energy beams to kill tumor cells. Methods include external beam radiation, stereotactic radiosurgery (Gamma Knife, CyberKnife), and proton beam therapy. Often used after surgery or for inoperable tumors.
+                            </p>
+                        </div>
+                        <div class="ns-edu-treatment">
+                            <div class="ns-edu-treatment__icon">💊</div>
+                            <h4 class="ns-edu-treatment__title">Chemotherapy</h4>
+                            <p class="ns-edu-treatment__desc">
+                                Drugs that kill rapidly dividing cells. Temozolomide (TMZ) is the standard chemotherapy for glioblastoma. Some drugs are taken orally, others intravenously. The blood-brain barrier can limit drug effectiveness.
+                            </p>
+                        </div>
+                        <div class="ns-edu-treatment">
+                            <div class="ns-edu-treatment__icon">🔍</div>
+                            <h4 class="ns-edu-treatment__title">Active Monitoring</h4>
+                            <p class="ns-edu-treatment__desc">
+                                For small, slow-growing tumors (especially meningiomas and low-grade gliomas), doctors may recommend "watchful waiting" with regular MRI scans to monitor any changes before deciding on treatment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 TRUSTED RESOURCES
+                 ================================================ -->
+            <div class="ns-card ns-edu-card">
+                <div class="ns-card__header">
+                    <div class="ns-card__header-left">
+                        <div class="ns-icon-badge ns-icon-badge--teal" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="ns-card__title">Trusted Resources</h2>
+                            <p class="ns-card__subtitle">Reputable organizations for further information</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ns-edu-content">
+                    <div class="ns-edu-resource-grid">
+                        <a href="https://www.cancer.org/cancer/types/brain-spinal-cord-tumors-adults.html" target="_blank" rel="noopener noreferrer" class="ns-edu-resource">
+                            <div class="ns-edu-resource__name">American Cancer Society</div>
+                            <div class="ns-edu-resource__desc">Comprehensive guide on brain and spinal cord tumors</div>
+                        </a>
+                        <a href="https://www.abta.org/" target="_blank" rel="noopener noreferrer" class="ns-edu-resource">
+                            <div class="ns-edu-resource__name">American Brain Tumor Association</div>
+                            <div class="ns-edu-resource__desc">Patient resources, research updates, and support</div>
+                        </a>
+                        <a href="https://www.who.int/news-room/fact-sheets/detail/brain-tumours" target="_blank" rel="noopener noreferrer" class="ns-edu-resource">
+                            <div class="ns-edu-resource__name">World Health Organization (WHO)</div>
+                            <div class="ns-edu-resource__desc">Brain tumor classification and global statistics</div>
+                        </a>
+                        <a href="https://www.mayoclinic.org/diseases-conditions/brain-tumor/symptoms-causes/syc-20350084" target="_blank" rel="noopener noreferrer" class="ns-edu-resource">
+                            <div class="ns-edu-resource__name">Mayo Clinic</div>
+                            <div class="ns-edu-resource__desc">Symptoms, causes, diagnosis, and treatment guides</div>
+                        </a>
+                        <a href="https://braintumor.org/" target="_blank" rel="noopener noreferrer" class="ns-edu-resource">
+                            <div class="ns-edu-resource__name">National Brain Tumor Society</div>
+                            <div class="ns-edu-resource__desc">Research funding, patient support, and advocacy</div>
+                        </a>
+                        <a href="https://www.nhs.uk/conditions/brain-tumours/" target="_blank" rel="noopener noreferrer" class="ns-edu-resource">
+                            <div class="ns-edu-resource__name">NHS (UK)</div>
+                            <div class="ns-edu-resource__desc">Symptoms, diagnosis, and treatment information</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================
+                 DISCLAIMER
+                 ================================================ -->
+            <div class="ns-disclaimer" style="margin-top: 28px;">
+                <div class="ns-disclaimer__icon" aria-hidden="true">⚕️</div>
+                <div>
+                    <strong>Educational Content Disclaimer:</strong> The information on this page is compiled from publicly available medical literature and is intended for <strong>educational purposes only</strong>. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for any medical concerns.
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ====================================================
+         FOOTER
+         ==================================================== -->
+    <footer class="ns-footer">
+        <div class="ns-container">
+            <strong>NeuroScan AI</strong> &bull; AI-Assisted Brain MRI &amp; Medical Report Analysis &bull; Research Prototype
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
