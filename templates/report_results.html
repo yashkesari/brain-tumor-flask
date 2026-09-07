@@ -165,7 +165,7 @@
                 <!-- ================================================
                      REPORT SUMMARY
                      ================================================ -->
-                {% if analysis and analysis.summary and analysis.summary.items %}
+                {% if analysis and analysis.summary and analysis.summary['items'] %}
                 <div class="ns-card">
                     <div class="ns-card__header">
                         <div class="ns-card__header-left">
@@ -183,7 +183,7 @@
                     </div>
 
                     <table class="ns-summary-table">
-                        {% for item in analysis.summary.items %}
+                        {% for item in analysis.summary['items'] %}
                         <tr>
                             <td>{{ item.section }}</td>
                             <td>{{ item.text }}</td>
